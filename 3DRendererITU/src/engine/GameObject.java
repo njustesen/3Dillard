@@ -8,12 +8,10 @@ import engine.shapes.Shape3D;
 public abstract class GameObject {
 
 	protected ArrayList<Shape3D> shapes;
-	protected double size;
 	protected Point3D position;
 	
-	public GameObject(double size, Point3D position){
+	public GameObject(Point3D position){
 		this.shapes = new ArrayList<Shape3D>();
-		this.size = size;
 		this.position = position;
 	}
 	
@@ -29,14 +27,6 @@ public abstract class GameObject {
 	
 	public void addShape(Shape3D shape){
 		shapes.add(shape);
-	}
-
-	public double getSize() {
-		return size;
-	}
-
-	public void setSize(double size) {
-		this.size = size;
 	}
 
 	public Point3D getPosition() {

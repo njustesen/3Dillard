@@ -9,7 +9,8 @@ public class PoolBall extends GameObject {
 	private int number;
 	
 	public PoolBall(int number, Point3D position){
-		super(number, position);
+		super(position);
+		this.number = number;
 		build();
 	}
 	
