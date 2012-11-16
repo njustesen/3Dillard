@@ -79,7 +79,7 @@ public class Game extends JPanel {
 	private void update(long delta) {
 		
 		// Move camera
-		scene.getCamera().moveX(-inputManager.getHorizontalArrows() * scene.getCamera().getMovementSpeed());
+		scene.getCamera().moveX(inputManager.getHorizontalArrows() * scene.getCamera().getMovementSpeed());
 		scene.getCamera().moveLookpointX(-inputManager.getHorizontalWASD() * scene.getCamera().getRotationSpeed());
 		scene.getCamera().moveY(-inputManager.getVerticalArrows() * scene.getCamera().getMovementSpeed());
 		scene.getCamera().moveLookpointY(-inputManager.getVerticalWASD() * scene.getCamera().getRotationSpeed());

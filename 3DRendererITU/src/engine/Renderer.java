@@ -67,10 +67,15 @@ public class Renderer {
 			for(Shape3D shape: obj.getShapes()){
 				for(Triangle3D t: shape.getTriangles()){
 					
+					// Triangle to object view
+					Point3D a3 = toObjectView(t.getPointA(), shape);
+					Point3D b3 = toObjectView(t.getPointB(), shape);
+					Point3D c3 = toObjectView(t.getPointC(), shape);
+					
 					// Triangle to world view
-					Point3D a3 = toWorldView(t.getPointA(), obj);
-					Point3D b3 = toWorldView(t.getPointB(), obj);
-					Point3D c3 = toWorldView(t.getPointC(), obj);
+					a3 = toWorldView(a3, obj);
+					b3 = toWorldView(b3, obj);
+					c3 = toWorldView(c3, obj);
 					
 					// Render points
 					Point2D a2 = renderVertice(a3, screen, projectionMatrix, camLookMatrix, camTransMatrix);
@@ -90,6 +95,12 @@ public class Renderer {
 		lastRendering = newRendering;
 	}
 	
+	private Point3D toObjectView(Point3D p, Shape3D shape) {
+		return new Point3D(	p.getX() + shape.getAnchor().getX(),
+				p.getY() + shape.getAnchor().getY(),
+				p.getZ() + shape.getAnchor().getZ()	);
+	}
+
 	private Point3D toWorldView(Point3D p, GameObject obj) {
 		
 		return new Point3D(	p.getX() + obj.getPosition().getX(),

@@ -21,6 +21,21 @@ public class PoolTable extends GameObject {
 		
 		addShape(new Cube(Point3D.Zero, height, width, depth));
 		
+		double thickness = 10;
+		
+		// TOP
+		addShape(new Cube(new Point3D(0, height/2 + thickness/2, depth/2), thickness, width, depth*2));
+		
+		// BOTTOM
+		addShape(new Cube(new Point3D(0, -height/2 - thickness/2, depth/2), thickness, width, depth*2));
+		
+		// LEFT
+		addShape(new Cube(new Point3D(-width/2 - thickness/2, 0, depth/2), height + thickness *2, thickness, depth*2));
+		
+		// RIGHT
+		addShape(new Cube(new Point3D(width/2 + thickness/2, 0, depth/2), height + thickness *2, thickness, depth*2));
+		
+		
 	}
 
 }

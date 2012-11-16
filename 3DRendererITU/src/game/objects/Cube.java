@@ -44,8 +44,8 @@ public class Cube extends Shape3D {
 		triangles.add(new Triangle3D(f,h,g));
 		
 		// BOTTOM
-		//triangles.add(new Triangle3D(g,c,d));
-		//triangles.add(new Triangle3D(g,h,d));
+		triangles.add(new Triangle3D(g,c,d));
+		triangles.add(new Triangle3D(g,h,d));
 		
 		// FRONT
 		triangles.add(new Triangle3D(c,a,e));

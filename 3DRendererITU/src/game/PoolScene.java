@@ -11,12 +11,12 @@ public class PoolScene extends Scene {
 
 	@Override
 	public void buildShapes() {
-		
-		PoolTable table = new PoolTable(Point3D.Zero, 100, 100, 100);
+
+		PoolTable table = new PoolTable(new Point3D(0,0,-10), 142, 284, 10);
 		objects.add(table);
 		
 		for(int i = 0; i < 8; i++){
-			PoolBall ball = new PoolBall(8, new Point3D(i*35, 0, i*35));
+			PoolBall ball = new PoolBall(8, 5, new Point3D(i*20-120, 0, 0));
 			objects.add(ball);
 		}
 	}
@@ -24,12 +24,12 @@ public class PoolScene extends Scene {
 	@Override
 	public void setCamera() {
 		
-		camera = new Camera(new Point3D(400,0,400),
+		camera = new Camera(new Point3D(0,0,600),
 							new Point3D(0,0,0),
 							new Vector3D(0,1,0), 70);
 		
-		camera.setMovementSpeed(10);
-		camera.setRotationSpeed(10);
+		camera.setMovementSpeed(30);
+		camera.setRotationSpeed(30);
 		
 	}
 	

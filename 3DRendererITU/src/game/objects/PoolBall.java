@@ -7,17 +7,19 @@ import engine.shapes.Sphere;
 public class PoolBall extends GameObject {
 
 	private int number;
+	private double radius;
 	
-	public PoolBall(int number, Point3D position){
+	public PoolBall(int number, double radius, Point3D position){
 		super(position);
 		this.number = number;
+		this.radius = radius;
 		build();
 	}
 	
 	@Override
 	public void build() {
 		
-		addShape(new Sphere(Point3D.Zero, 10));
+		addShape(new Sphere(Point3D.Zero, radius));
 		
 	}
 
