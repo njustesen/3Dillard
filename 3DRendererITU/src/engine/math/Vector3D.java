@@ -1,8 +1,8 @@
 package engine.math;
 
-
-
-/**Vector class representing a vector (a direction) in 3d space*/
+/**
+ * Vector class representing a vector (a direction) in 3d space
+ **/
 public class Vector3D {
 
 	private double x, y, z;
@@ -25,43 +25,56 @@ public class Vector3D {
 		return z;
 	}
 	
-	/**returns the length of the vector. |V| = sqrt(x^2 + y^2 + z^2).*/
+	/**
+	 * returns the length of the vector. |V| = sqrt(x^2 + y^2 + z^2).
+	 **/
 	public double getVectorLength(){
 		return Math.sqrt((x*x)+(y*y)+(z*z));
 	}
 	
-	/**Adding this vector with the input vector.*/
+	/**
+	 * Adding this vector with the input vector.
+	 **/
 	public Vector3D vectorAddition(Vector3D v){
 		Vector3D newVector = new Vector3D(x+v.x, y+v.y, z+v.z);
 		return newVector;
 	}
 	
-	/**Subtracting the input vector from this vector.*/
+	/**
+	 * Subtracting the input vector from this vector.
+	 **/
 	public Vector3D vectorSubtraction(Vector3D v){
 		Vector3D newVector = new Vector3D(x-v.x, y-v.y, z-v.z);
 		return newVector;	
 	}
 	
-	/**Scaling a vector.*/
+	/**
+	 * Scaling a vector.
+	 **/
 	public Vector3D vectorScaling(double scalar){
 		Vector3D newVector = new Vector3D(x*scalar, y*scalar, z*scalar);
 		return newVector;	
 	}
 	
-	/**Returns the dot-product of this and a given vector.*/
+	/**
+	 * Returns the dot-product of this and a given vector.
+	 **/
 	public double getDotProduct(Vector3D v){
 		return x*v.x + y*v.y + z*v.z;
 	}
 	
-	/**Returns the cross-product of this and a given vector.*/
+	/**
+	 * Returns the cross-product of this and a given vector.
+	 **/
 	public Vector3D getCrossProduct(Vector3D v) {
 	    return new Vector3D(y * v.z - z * v.y,
 	                       z * v.x - x * v.z,
 	                       x * v.y - y * v.x);
-	  }
+	}
 
-	
-	/**returns a vector with a length of 1 unit.*/
+	/**
+	 * returns a vector with a length of 1 unit.
+	 **/
 	public Vector3D getUnitVector(){
 		Vector3D newVector = new Vector3D(x/getVectorLength(), y/getVectorLength(), z/getVectorLength());
 		return newVector;

@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import engine.math.Matrix;
 import engine.math.Point2D;
 import engine.math.Point3D;
-import engine.math.Triangle2D;
-import engine.math.Triangle3D;
 import engine.math.Vector3D;
 import engine.shapes.Shape3D;
+import engine.shapes.Triangle2D;
+import engine.shapes.Triangle3D;
 
 
 public class Renderer {
@@ -64,25 +64,27 @@ public class Renderer {
 				   											  {0,0,-1,0}});
 		
 		for(GameObject obj : scene.getObjects()){
-			for(Triangle3D t: obj.getShape().getTriangles()){
-				
-				// Triangle to world view
-				Point3D a3 = toWorldView(t.getPointA(), obj);
-				Point3D b3 = toWorldView(t.getPointB(), obj);
-				Point3D c3 = toWorldView(t.getPointC(), obj);
-				
-				// Render points
-				Point2D a2 = renderVertice(a3, screen, projectionMatrix, camLookMatrix, camTransMatrix);
-				Point2D b2 = renderVertice(b3, screen, projectionMatrix, camLookMatrix, camTransMatrix);
-				Point2D c2 = renderVertice(c3, screen, projectionMatrix, camLookMatrix, camTransMatrix);
-				
-				// Remove if outside screen
-				if (!(screen.isOutsideScreen(a2) && screen.isOutsideScreen(b2) && screen.isOutsideScreen(c2))){
+			for(Shape3D shape: obj.getShapes()){
+				for(Triangle3D t: shape.getTriangles()){
 					
-					newRendering.add(new Triangle2D(a2,b2,c2)); 
+					// Triangle to world view
+					Point3D a3 = toWorldView(t.getPointA(), obj);
+					Point3D b3 = toWorldView(t.getPointB(), obj);
+					Point3D c3 = toWorldView(t.getPointC(), obj);
 					
+					// Render points
+					Point2D a2 = renderVertice(a3, screen, projectionMatrix, camLookMatrix, camTransMatrix);
+					Point2D b2 = renderVertice(b3, screen, projectionMatrix, camLookMatrix, camTransMatrix);
+					Point2D c2 = renderVertice(c3, screen, projectionMatrix, camLookMatrix, camTransMatrix);
+					
+					// Remove if outside screen
+					if (!(screen.isOutsideScreen(a2) && screen.isOutsideScreen(b2) && screen.isOutsideScreen(c2))){
+						
+						newRendering.add(new Triangle2D(a2,b2,c2)); 
+						
+					}
 				}
-			}	
+			}
 		}		
 		
 		lastRendering = newRendering;

@@ -2,19 +2,17 @@ package game;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.ArrayList;
 import java.util.Date;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import engine.Renderer;
 import engine.Scene;
 import engine.Screen;
-import engine.math.Triangle2D;
+import engine.shapes.Triangle2D;
 import game.managers.InputManager;
 
 
+@SuppressWarnings("serial")
 public class Game extends JPanel {
 	
 	private static final int FPS = 24;

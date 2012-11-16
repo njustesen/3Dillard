@@ -1,26 +1,34 @@
 package engine;
 
+import java.util.ArrayList;
+
 import engine.math.Point3D;
 import engine.shapes.Shape3D;
 
 public abstract class GameObject {
 
-	protected Shape3D shape;
+	protected ArrayList<Shape3D> shapes;
 	protected double size;
 	protected Point3D position;
 	
-	public GameObject(Shape3D shape, double size, Point3D position){
-		this.shape = shape;
+	public GameObject(double size, Point3D position){
+		this.shapes = new ArrayList<Shape3D>();
 		this.size = size;
 		this.position = position;
 	}
+	
+	public abstract void build();
 
-	public Shape3D getShape() {
-		return shape;
+	public ArrayList<Shape3D> getShapes() {
+		return shapes;
 	}
 
-	public void setShape(Shape3D shape) {
-		this.shape = shape;
+	public void setShape(ArrayList<Shape3D> shapes) {
+		this.shapes = shapes;
+	}
+	
+	public void addShape(Shape3D shape){
+		shapes.add(shape);
 	}
 
 	public double getSize() {

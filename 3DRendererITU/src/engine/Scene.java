@@ -2,8 +2,6 @@ package engine;
 
 import java.util.ArrayList;
 
-import engine.shapes.Shape3D;
-
 public abstract class Scene {
 
 	protected ArrayList <GameObject> objects;

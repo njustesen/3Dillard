@@ -1,14 +1,16 @@
 package engine.shapes;
 
 import engine.math.Point3D;
-import engine.math.Triangle3D;
 
 
 public class Pyramid extends Shape3D{
 	
+	double size;
+	
 	public Pyramid(Point3D anchor, int size){
-		super(anchor, size);
-		
+		super(anchor);
+		this.size = size;
+		build();
 	}
 
 	@Override

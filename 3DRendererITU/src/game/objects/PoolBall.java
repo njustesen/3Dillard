@@ -9,8 +9,14 @@ public class PoolBall extends GameObject {
 	private int number;
 	
 	public PoolBall(int number, Point3D position){
-		super(new Sphere(Point3D.Zero, 10), 10, position);
-		this.number = number;
+		super(number, position);
+		build();
+	}
+	
+	@Override
+	public void build() {
+		
+		addShape(new Sphere(Point3D.Zero, 10));
 		
 	}
 
@@ -21,5 +27,5 @@ public class PoolBall extends GameObject {
 	public void setNumber(int number) {
 		this.number = number;
 	}
-	
+
 }

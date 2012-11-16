@@ -1,8 +1,5 @@
 package engine.math;
 
-
-
-
 public class Matrix {
 
 	int rows, colums;
@@ -43,24 +40,18 @@ public class Matrix {
 		
 		
 	}
+	
 	// return multiplication of tis and other matrix
     public Matrix multiplication(Matrix otherMatrix) {
        if(this.colums != otherMatrix.rows)
     	   throw new RuntimeException("Illegal matrix dimensions.");
        Matrix newMatrix = new Matrix(otherMatrix.rows, otherMatrix.colums);
-       int counter = 0;
        for (int i = 0; i < otherMatrix.rows; i++){
     	   for(int j = 0; j < otherMatrix.colums; j++){
-    //		   counter++;
     		   for(int k = 0; k < this.colums; k++){
     			   newMatrix.matrixData[i][j] += (this.matrixData[i][k]*otherMatrix.matrixData[k][j]);
-    //			   System.out.println("this = "+this.matrixData[i][k]+" * "+otherMatrix.matrixData[k][j]);
-    //			   System.out.println("new matrix being created.. cell "+i+","+j+"   from this matrix cell "+i+","+k+
-    //					   " and other matrix cell "+k+","+j);
     		   }
-    //		   counter = 0;
     	   }
-   // 	   System.out.println("Value of ["+i+"]["+counter+"] = "+newMatrix.matrixData[i][counter]);
        }
        return newMatrix;
     }

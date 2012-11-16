@@ -3,19 +3,15 @@ package engine.shapes;
 import java.util.ArrayList;
 
 import engine.math.Point3D;
-import engine.math.Triangle3D;
 
 
 public abstract class Shape3D {
 
 	protected Point3D anchor;
-	protected int size;
 	protected ArrayList <Triangle3D> triangles = new ArrayList <Triangle3D>();
 	
-	public Shape3D(Point3D anchor, int size){
+	public Shape3D(Point3D anchor){
 		this.anchor = anchor;
-		this.size = size;
-		build();
 	}
 	
 	public abstract void build();

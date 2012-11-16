@@ -11,7 +11,7 @@ public class PoolScene extends Scene {
 	@Override
 	public void buildShapes() {
 		for(int i = 0; i < 8; i++){
-			PoolBall ball = new PoolBall(8, new Point3D(i*350+500, 0, i*350+500));
+			PoolBall ball = new PoolBall(8, new Point3D(i*35, 0, i*35));
 			objects.add(ball);
 		}
 	}
@@ -19,12 +19,12 @@ public class PoolScene extends Scene {
 	@Override
 	public void setCamera() {
 		
-		camera = new Camera(new Point3D(2,100,2),
-							new Point3D(550,3,550),
+		camera = new Camera(new Point3D(400,0,400),
+							new Point3D(0,0,0),
 							new Vector3D(0,1,0), 70);
 		
-		camera.setMovementSpeed(30);
-		camera.setRotationSpeed(30);
+		camera.setMovementSpeed(3);
+		camera.setRotationSpeed(3);
 		
 	}
 	

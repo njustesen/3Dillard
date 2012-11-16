@@ -3,13 +3,15 @@ package engine.shapes;
 import java.util.ArrayList;
 
 import engine.math.Point3D;
-import engine.math.Triangle3D;
 
 public class Sphere extends Shape3D{
 
-	public Sphere(Point3D anchor, int size) {
-		super(anchor, size);
-		
+	double radius;
+	
+	public Sphere(Point3D anchor, double radius) {
+		super(anchor);
+		this.radius = radius;
+		build();
 	}
 
 	@Override
@@ -26,9 +28,9 @@ public class Sphere extends Shape3D{
 			for(int n = 0; n < N; n++){
 				
 				// (x, y, z) = (sin(Pi * m/M) cos(2Pi * n/N), sin(Pi * m/M) sin(2Pi * n/N), cos(Pi * m/M))
-				Point3D p = new Point3D(	size * Math.sin(Math.PI * m/M) * Math.cos(2*Math.PI * n/N), 
-										size * Math.sin(Math.PI * m/M) * Math.sin(2*Math.PI * n/N), 
-										size * Math.cos(Math.PI * m/M));
+				Point3D p = new Point3D(	radius * Math.sin(Math.PI * m/M) * Math.cos(2*Math.PI * n/N), 
+											radius * Math.sin(Math.PI * m/M) * Math.sin(2*Math.PI * n/N), 
+											radius * Math.cos(Math.PI * m/M));
 				
 				points.add(p);
 				
