@@ -55,15 +55,21 @@ public class Renderer {
 		
 		for(Shape3D shape: scene.getShapes()){
 			for(Triangle3 t: shape.triangles){
-					
-				Point2 a = renderVertice(t.getPointA(), screen, projectionMatrix, camLookMatrix, camTransMatrix);
-				Point2 b = renderVertice(t.getPointB(), screen, projectionMatrix, camLookMatrix, camTransMatrix);
-				Point2 c = renderVertice(t.getPointC(), screen, projectionMatrix, camLookMatrix, camTransMatrix);
 				
-				// Remove outside screen
-				if (!(screen.isOutsideScreen(a) && screen.isOutsideScreen(b) && screen.isOutsideScreen(c))){
+				// Triangle to world view
+				Point3 a3 = toWorldView(t.getPointA(), shape);
+				Point3 b3 = toWorldView(t.getPointB(), shape);
+				Point3 c3 = toWorldView(t.getPointC(), shape);
+				
+				// Render points
+				Point2 a2 = renderVertice(a3, screen, projectionMatrix, camLookMatrix, camTransMatrix);
+				Point2 b2 = renderVertice(b3, screen, projectionMatrix, camLookMatrix, camTransMatrix);
+				Point2 c2 = renderVertice(c3, screen, projectionMatrix, camLookMatrix, camTransMatrix);
+				
+				// Remove if outside screen
+				if (!(screen.isOutsideScreen(a2) && screen.isOutsideScreen(b2) && screen.isOutsideScreen(c2))){
 					
-					newRendering.add(new Triangle2(a,b,c)); 
+					newRendering.add(new Triangle2(a2,b2,c2)); 
 					
 				}
 			}	
@@ -72,8 +78,14 @@ public class Renderer {
 		lastRendering = newRendering;
 	}
 	
+	private Point3 toWorldView(Point3 p, Shape3D shape) {
+		return new Point3(	p.getX() + shape.getAnchor().getX(),
+							p.getY() + shape.getAnchor().getY(),
+							p.getZ() + shape.getAnchor().getZ()	);
+	}
+
 	/**
-	 * Renders a vertice.
+	 * Renders a vertex.
 	 * @param p
 	 * @param screen
 	 * @param projectionMatrix

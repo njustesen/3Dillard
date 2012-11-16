@@ -22,7 +22,7 @@ public class Game extends JPanel {
 	 */
 	public Game(){
 		
-		scene = new PyramidMarchScene();
+		scene = new BillardScene();
 		
 		screen = new Screen(screenWidth, screenHeight);
 		

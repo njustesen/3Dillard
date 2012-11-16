@@ -3,9 +3,9 @@ public class BillardScene extends Scene {
 
 	@Override
 	public void buildShapes() {
-		for(int i = 0; i < 50; i++){
-			for(int j = 0; j < 50; j++){
-				Pyramid p = new Pyramid(new Point3(i*350+500, 0, j*350+500), 50);
+		for(int i = 0; i < 4; i++){
+			for(int j = 0; j < 4; j++){
+				Sphere p = new Sphere(new Point3(i*350+500, 0, j*350+500), 50);
 				shapes.add(p);
 			}
 		}

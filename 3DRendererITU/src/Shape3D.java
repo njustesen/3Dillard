@@ -14,11 +14,11 @@ public abstract class Shape3D {
 	
 	public abstract void build();
 
-	public Point3 getCenter() {
+	public Point3 getAnchor() {
 		return anchor;
 	}
 
-	public void setCenter(Point3 anchor) {
+	public void setAnchor(Point3 anchor) {
 		this.anchor = anchor;
 	}
 
