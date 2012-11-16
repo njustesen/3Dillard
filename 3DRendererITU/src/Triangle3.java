@@ -1,11 +1,10 @@
-import java.util.ArrayList;
 
-public class Triangle {
+public class Triangle3 {
 
 	private Point3 a, b, c;
 	private Point3 centerPoint;
 	
-	public Triangle(Point3 a, Point3 b, Point3 c) {
+	public Triangle3(Point3 a, Point3 b, Point3 c) {
 		this.centerPoint = new Point3((a.getX()+b.getX()+c.getX())/3,
 									  (a.getY()+b.getY()+c.getY())/3,
 									  (a.getZ()+b.getZ()+c.getZ())/3);
