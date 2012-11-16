@@ -1,11 +1,9 @@
 import java.util.ArrayList;
 
-
 public class Triangle {
 
 	private Point3 a, b, c;
 	private Point3 centerPoint;
-	private ArrayList<Point3> vertices = new ArrayList<Point3>();
 	
 	public Triangle(Point3 a, Point3 b, Point3 c) {
 		this.centerPoint = new Point3((a.getX()+b.getX()+c.getX())/3,
@@ -15,9 +13,6 @@ public class Triangle {
 		this.a = a;
 		this.b = b;
 		this.c = c;
-		vertices.add(a);
-		vertices.add(b);
-		vertices.add(c);
 	}
 
 	public Point3 getPointA(){
@@ -53,8 +48,9 @@ public class Triangle {
 	public Point3 getCenter(){
 		return centerPoint;
 	}
-	
+	/*
 	public ArrayList<Point3> getVertices(){
-		return vertices;
+		//return vertices;
 	}
+*/
 }

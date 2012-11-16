@@ -11,84 +11,51 @@ import javax.swing.JPanel;
 
 
 
-public class Display extends JFrame implements KeyListener{
+public class Display extends JPanel implements KeyListener{
 
-	private int width, height;
-	public Camera camera;
-	public Main m;
-	private ImagePanel panel;
 	private String keyStringPressed;
 	private String keyStringReleased;
-	//ArrayList <Integer> al = new ArrayList<Integer>();
+	private ArrayList<Triangle2> renderedTriangles;
 
-
-	
-	public Display(int w, int h, Camera cam, Main m){
-		width = w;
-		height = h;
-		camera = cam;
-		panel = new ImagePanel();
-		this.m = m;
-		
-		this.add(panel);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    this.setSize(width, height);
+	public Display(int w, int h){
+		this.setSize(w, h);
 	    this.setVisible(true);
-	    
 	    addKeyListener(this);
+	    renderedTriangles = new ArrayList<Triangle2>();
 	}
 	
 	public double getScreenRatio(){
-		double ratio = (double)width/(double)height;
-		return ratio;
+		
+		return (double)getWidth()/(double)getHeight();
+		
 	}
 	
 	public void draw(){
-		repaint();
+		update(getGraphics());
 	}
 	
-	//private inner class
-	 private class ImagePanel extends JPanel {
-		    
-		  
-		   public void paintComponent(Graphics g) {
-			
-			   g.setColor(Color.BLACK);
-			   g.fillRect(0, 0, width, height);
-			   
-			   g.setColor(Color.WHITE);
-			   System.out.println("numberOfPoints = "+m.getNumberOfPoints());
-			   
-			   for(int i = 0; i < m.getNumberOfPoints(); i+=6){
+	public void paintComponent(Graphics g, ArrayList<Triangle2> renderedTriangles) {
 		
-				   g.drawLine((int)m.pointsToBeDrawn[i], (int)m.pointsToBeDrawn[i+1], 
-						   (int)m.pointsToBeDrawn[i+2], (int)m.pointsToBeDrawn[i+3]);
-				   g.drawLine((int)m.pointsToBeDrawn[i+2], (int)m.pointsToBeDrawn[i+3], 
-						   (int)m.pointsToBeDrawn[i+4], (int)m.pointsToBeDrawn[i+5]);
-				   g.drawLine((int)m.pointsToBeDrawn[i+4],(int)m.pointsToBeDrawn[i+5], 
-						   (int)m.pointsToBeDrawn[i], (int)m.pointsToBeDrawn[i+1]);
-		
-		//ArrayList
-		/*		   System.out.println("i = "+i+"   size = "+al.size());
-				   System.out.println("from "+al.get(i)+","+ al.get(i+1)+" to "+al.get(i+2)+","+al.get(i+3));
-				   System.out.println("from "+al.get(i+2)+","+al.get(i+3)+" to "+al.get(i+4)+","+al.get(i+5));
-				   System.out.println("from "+al.get(i+4)+","+al.get(i+5)+" to "+al.get(i)+","+al.get(i+1));
-			   
-				   g.drawLine(al.get(i), al.get(i+1), 
-					   		al.get(i+2), al.get(i+3));
-				   g.drawLine(al.get(i+2), al.get(i+3), 
-				   			al.get(i+4), al.get(i+5));
-				   g.drawLine(al.get(i+4), al.get(i+5), 
-				   			al.get(i),al.get(i+1));
-		*/	   
-			  
-			   }
-			}
-	}
+		 g.setColor(Color.BLACK);
+		 g.fillRect(0, 0, getWidth(), getHeight());
+		 g.setColor(Color.GREEN);
+
+		 for(Triangle2 t : renderedTriangles){
+
+			 g.drawLine((int)t.getA().getX(), (int)t.getA().getY(), 
+					 	(int)t.getB().getX(), (int)t.getB().getY());
+  
+			 g.drawLine((int)t.getB().getX(), (int)t.getB().getY(), 
+					 	(int)t.getC().getX(), (int)t.getC().getY());
+  
+			 g.drawLine((int)t.getC().getX(), (int)t.getC().getY(), 
+					 	(int)t.getA().getX(), (int)t.getA().getY());
+
+		 }
+	 }
 
 	 @Override
 		public void keyPressed(KeyEvent e) {
-			System.out.println("key pressed");
 			int keyPressed = e.getKeyCode();
 			
 			switch (keyPressed) {
@@ -102,12 +69,11 @@ public class Display extends JFrame implements KeyListener{
 			case KeyEvent.VK_D: keyStringPressed = "D"; break;
 			default: keyStringPressed = "null"; break;
 			}
-			m.keyIsPressed(keyStringPressed);
+			//m.keyIsPressed(keyStringPressed);
 		}
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			System.out.println("key released");
 			int keyReleased = e.getKeyCode();
 			
 			switch (keyReleased) {
@@ -121,7 +87,7 @@ public class Display extends JFrame implements KeyListener{
 			case KeyEvent.VK_D: keyStringReleased = "D"; break;
 			default: keyStringReleased = null; break;
 			}
-			m.keyIsReleased(keyStringReleased);
+			//m.keyIsReleased(keyStringReleased);
 		}
 
 		@Override
@@ -129,4 +95,13 @@ public class Display extends JFrame implements KeyListener{
 			// TODO Auto-generated method stub
 			
 		}
+
+		public ArrayList<Triangle2> getRenderedTriangles() {
+			return renderedTriangles;
+		}
+
+		public void setRenderedTriangles(ArrayList<Triangle2> renderedTriangles) {
+			this.renderedTriangles = renderedTriangles;
+		}
+		
 }
