@@ -5,6 +5,8 @@ public class Camera {
 	private Point3 lookPoint;
 	private Vector3 up;
 	private int angle;
+	private int movementSpeed;
+	private int rotationSpeed;
 	
 	public Camera(Point3 position, Point3 lookPoint, Vector3 up, int angle){
 		this.position = position;
@@ -75,5 +77,38 @@ public class Camera {
 	
 	public Point3 getPosition(){
 		return position;
+	}
+
+	public int getMovementSpeed() {
+		return movementSpeed;
+	}
+
+	public int getRotationSpeed() {
+		return rotationSpeed;
+	}
+
+	public void setMovementSpeed(int movementSpeed) {
+		this.movementSpeed = movementSpeed;
+	}
+
+	public void setRotationSpeed(int rotationSpeed) {
+		this.rotationSpeed = rotationSpeed;
+	}
+
+	public void moveX(int i) {
+		position.setX(position.getX() + i);
+		
+	}
+
+	public void moveY(int i) {
+		position.setY(position.getY() + i);
+	}
+
+	public void moveLookpointX(int i) {
+		lookPoint.setX(lookPoint.getX() + i);
+	}
+
+	public void moveLookpointY(int i) {
+		lookPoint.setY(lookPoint.getY() + i);
 	}
 }

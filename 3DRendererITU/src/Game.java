@@ -13,30 +13,28 @@ import javax.swing.JPanel;
 public class Game extends JPanel {
 	
 	private static final int FPS = 24;
-	private static final int screenWidth = 800;
-	private static final int screenHeight = 400;
+	private static final int screenWidth = 1200;
+	private static final int screenHeight = 700;
 	
 	private Universe universe;
 	private Camera camera;
-	private int camreaSpeed = 20;
+	private InputManager inputManager = new InputManager(); 
 	
-	private boolean moveCamLeft;
-	private boolean moveCamRight;
-	private boolean moveCamDown;
-	private boolean moveCamUp;
-	private boolean moveLookpointDown;
-	private boolean moveLookpointUp;
-	private boolean moveLookpointLeft;
-	private boolean moveLookpointRight;
 	private ArrayList<Triangle2> renderedTriangles;
 	
 	public Game(){
 		
 		universe = new Universe();
 		
-		camera = new Camera(new Point3(2,100,2),new Point3(550,3,550),new Vector3(0,1,0), 70);
+		camera = new Camera(new Point3(2,100,2),
+							new Point3(550,3,550),
+							new Vector3(0,1,0), 70);
+		camera.setMovementSpeed(30);
+		camera.setRotationSpeed(30);
 		
 		renderedTriangles = new ArrayList<Triangle2>();
+		
+		inputManager = new InputManager();
 
     	setBackground(Color.black);
 		
@@ -52,12 +50,8 @@ public class Game extends JPanel {
         f.setVisible(true);
         f.setSize(screenWidth, screenHeight);
 
-        setPreferredSize(screenWidth, screenHeight);
-		
-	}
-	
-	private void setPreferredSize(int screenwidth2, int screenheight2) {
-		// TODO Auto-generated method stub
+        setSize(screenWidth, screenHeight);
+        f.addKeyListener(inputManager);
 		
 	}
 
@@ -164,35 +158,12 @@ public class Game extends JPanel {
 	
 	private void update(long delta) {
 		
-		if(moveCamLeft){
-			camera.setX(camera.getX()+camreaSpeed);
-			camera.setLookpointX(camera.getLookPointX()+camreaSpeed);
-			}
-		if(moveCamRight){
-			camera.setX(camera.getX()-camreaSpeed);
-			camera.setLookpointX(camera.getLookPointX()-camreaSpeed);
-			}
-		if(moveCamUp){
-			camera.setY(camera.getY()+camreaSpeed);
-			camera.setLookpointY(camera.getLookPointY()+camreaSpeed);
-			}
-		if(moveCamDown){
-			camera.setY(camera.getY()-camreaSpeed);
-			camera.setLookpointY(camera.getLookPointY()-camreaSpeed);
-			}
-		if(moveLookpointUp){
-			camera.setLookpointY(camera.getLookPointY()+camreaSpeed);
-			}
-		if(moveLookpointDown){
-			camera.setLookpointY(camera.getLookPointY()-camreaSpeed);
-			}
-		if(moveLookpointLeft){
-			camera.setLookpointX(camera.getLookPointX()+camreaSpeed);
-			}
-		if(moveLookpointRight){
-			camera.setLookpointX(camera.getLookPointX()-camreaSpeed);
-			}
-		
+		// Move camera
+		camera.moveX(-inputManager.getHorizontalArrows() * camera.getMovementSpeed());
+		camera.moveLookpointX(-inputManager.getHorizontalWASD() * camera.getRotationSpeed());
+		camera.moveY(-inputManager.getVerticalArrows() * camera.getMovementSpeed());
+		camera.moveLookpointY(-inputManager.getVerticalWASD() * camera.getRotationSpeed());
+			
 		render();
 		
 	}
@@ -223,46 +194,8 @@ public class Game extends JPanel {
 					 	(int)t.getA().getX(), (int)t.getA().getY());
 
 		 }
-	 }
-
-	public void keyIsPressed(String key) {
-		if(key == "RIGHT")
-			moveCamRight = true;
-		if(key == "LEFT")
-			moveCamLeft = true;
-		if(key == "UP")
-			moveCamUp = true;
-		if(key == "DOWN")
-			moveCamDown = true;
-		if(key == "W")
-			moveLookpointUp = true;
-		if(key == "S")
-			moveLookpointDown = true;
-		if(key == "A")
-			moveLookpointLeft = true;
-		if(key == "D")
-			moveLookpointRight = true;
 	}
 
-	public void keyIsReleased(String key) {
-		if(key == "RIGHT")
-			moveCamRight = false;
-		if(key == "LEFT")
-			moveCamLeft = false;
-		if(key == "UP")
-			moveCamUp = false;
-		if(key == "DOWN")
-			moveCamDown = false;
-		if(key == "W")
-			moveLookpointUp = false;
-		if(key == "S")
-			moveLookpointDown = false;
-		if(key == "A")
-			moveLookpointLeft = false;
-		if(key == "D")
-			moveLookpointRight = false;
-	}
-	
 	private double getScreenRatio(){
 		
 		return (double)getWidth()/(double)getHeight();
