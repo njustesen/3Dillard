@@ -5,6 +5,7 @@ package engine.math;
  **/
 public class Vector3D {
 
+	public static final Vector3D Zero = new Vector3D(0,0,0);
 	private double x, y, z;
 	
 	public Vector3D(double x, double y, double z){
@@ -25,6 +26,18 @@ public class Vector3D {
 		return z;
 	}
 	
+	public void setX(double x) {
+		this.x = x;
+	}
+
+	public void setY(double y) {
+		this.y = y;
+	}
+
+	public void setZ(double z) {
+		this.z = z;
+	}
+
 	/**
 	 * returns the length of the vector. |V| = sqrt(x^2 + y^2 + z^2).
 	 **/
@@ -91,7 +104,6 @@ public class Vector3D {
 	public Point3D toPoint(){
 		Point3D p = new Point3D(x,y,z);
 		return p;	
-	}
-	
+	}	
 	
 }

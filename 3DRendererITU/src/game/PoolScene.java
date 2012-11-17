@@ -12,13 +12,13 @@ public class PoolScene extends Scene {
 	@Override
 	public void buildShapes() {
 
-		PoolTable table = new PoolTable(new Point3D(0,0,-10), 142, 284, 10);
-		objects.add(table);
-		
 		for(int i = 0; i < 8; i++){
 			PoolBall ball = new PoolBall(8, 5, new Point3D(i*20-120, 0, 0));
 			objects.add(ball);
 		}
+		
+		PoolTable table = new PoolTable(new Point3D(0,0,-10), 142, 284, 10, 20);
+		objects.add(table);
 	}
 
 	@Override

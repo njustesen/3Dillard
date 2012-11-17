@@ -2,14 +2,21 @@ package game;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import engine.Renderer;
 import engine.Scene;
 import engine.Screen;
+import engine.input.InputManager;
+import engine.math.Vector3D;
+import engine.physics.MovableBall;
+import engine.physics.PhysicsManager;
 import engine.shapes.Triangle2D;
-import game.managers.InputManager;
+import game.objects.PoolBall;
 
 
 @SuppressWarnings("serial")
@@ -20,6 +27,7 @@ public class Game extends JPanel {
 	private static final int screenHeight = 700;
 	
 	private InputManager inputManager; 
+	private PhysicsManager physicsManager; 
 	private Screen screen;
 	private Scene scene;
 	private Renderer renderer;
@@ -36,6 +44,7 @@ public class Game extends JPanel {
 		renderer = new Renderer();
 		
 		inputManager = new InputManager();
+		physicsManager = new PhysicsManager();
 
     	setBackground(Color.black);
 		
@@ -83,6 +92,19 @@ public class Game extends JPanel {
 		scene.getCamera().moveLookpointX(-inputManager.getHorizontalWASD() * scene.getCamera().getRotationSpeed());
 		scene.getCamera().moveY(-inputManager.getVerticalArrows() * scene.getCamera().getMovementSpeed());
 		scene.getCamera().moveLookpointY(-inputManager.getVerticalWASD() * scene.getCamera().getRotationSpeed());
+		
+		// Add force to ball
+		Random r = new Random();
+		int i = r.nextInt(100);
+		if (i == 1){
+			PoolBall ball = (PoolBall) (scene.getObjects().get(0));
+			ball.addVelocity(new Vector3D(3,1,0));
+			System.out.println("Velocity added");
+		}
+		PoolBall ball = (PoolBall) (scene.getObjects().get(0));
+		ArrayList<MovableBall> balls = new ArrayList<MovableBall>();
+		balls.add(ball);
+		physicsManager.moveBalls(balls);
 		
 	}
 
