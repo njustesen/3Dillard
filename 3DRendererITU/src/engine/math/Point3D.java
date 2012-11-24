@@ -57,4 +57,35 @@ public class Point3D {
 		return newMatrix;
 	}
 	
+	/**
+	 * Subtracting the input vector from this vector.
+	 **/
+	public Point3D add(Point3D p){
+		Point3D newPoint = new Point3D(x+p.x, y+p.y, z+p.z);
+		return newPoint;	
+	}
+	
+	/**
+	 * Subtracting the input vector from this vector.
+	 **/
+	public Point3D subtract(Point3D p){
+		Point3D newPoint = new Point3D(x-p.x, y-p.y, z-p.z);
+		return newPoint;	
+	}
+	
+	/**
+	 * Subtracting the input vector from this vector.
+	 **/
+	public Point3D multiply(Point3D p){
+		Point3D newPoint = new Point3D(x*p.x, y*p.y, z*p.z);
+		return newPoint;	
+	}
+	
+	/**
+	 * Subtracting the input vector from this vector.
+	 **/
+	public Point3D divide(Point3D p){
+		Point3D newPoint = new Point3D(x/p.x, y/p.y, z/p.z);
+		return newPoint;	
+	}
 }

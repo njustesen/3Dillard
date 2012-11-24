@@ -48,17 +48,26 @@ public class Vector3D {
 	/**
 	 * Adding this vector with the input vector.
 	 **/
-	public Vector3D vectorAddition(Vector3D v){
-		Vector3D newVector = new Vector3D(x+v.x, y+v.y, z+v.z);
-		return newVector;
+	public Vector3D add(Vector3D v){
+		return new Vector3D(x+v.x, y+v.y, z+v.z);
 	}
 	
 	/**
 	 * Subtracting the input vector from this vector.
 	 **/
-	public Vector3D vectorSubtraction(Vector3D v){
-		Vector3D newVector = new Vector3D(x-v.x, y-v.y, z-v.z);
-		return newVector;	
+	public Vector3D subtract(Vector3D v){
+		return new Vector3D(x-v.x, y-v.y, z-v.z);	
+	}
+	
+	/**
+	 * Subtracting the input vector from this vector.
+	 **/
+	public Vector3D multiply(Vector3D v){
+		return new Vector3D(x*v.x, y*v.y, z*v.z);	
+	}
+	
+	public Vector3D multiply(double other) {
+		return new Vector3D(x*other, y*other, z*other);
 	}
 	
 	/**
@@ -104,6 +113,24 @@ public class Vector3D {
 	public Point3D toPoint(){
 		Point3D p = new Point3D(x,y,z);
 		return p;	
+	}
+
+	public void normalize() {
+		
+		if (Math.abs(x) >= Math.abs(y) && Math.abs(x) >= Math.abs(z)){
+			y = y/x;
+			z = z/x;
+			x = 1;
+		} else if (Math.abs(y) >= Math.abs(x) && Math.abs(y) >= Math.abs(z)){
+			x = x/y;
+			z = z/y;
+			y = 1;
+		} else if (Math.abs(y) >= Math.abs(x) && Math.abs(y) >= Math.abs(z)){
+			x = x/y;
+			z = z/y;
+			y = 1;
+		}
+		
 	}	
 	
 }
