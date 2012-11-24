@@ -81,22 +81,30 @@ public class PoolPhysicsManager extends PhysicsManager {
 		
 	}
 	
-	private void bumperCollision(Bumper bumperTop, PoolBall ball) {
+	private void bumperCollision(Bumper bumper, PoolBall ball) {
 		
-		int xDir = 1;
-		int yDir = 1;
+		int x = 1;
+		int y = 1;
 		
-		if (bumperTop.getAnchor().getX() != 0){
-			xDir = -1;
+		if (bumper.getAnchor().getX() != 0){
+			x = -1;
+			if (bumper.getAnchor().getX() > 0)
+				ball.getPosition().setX(bumper.getAnchor().getX() - (bumper.getWidth()/2 + ball.getRadius()));
+			if (bumper.getAnchor().getX() < 0)
+				ball.getPosition().setX(bumper.getAnchor().getX() + (bumper.getWidth()/2 + ball.getRadius()));
 		}
 		
-		if (bumperTop.getAnchor().getY() != 0){
-			yDir = -1;
+		if (bumper.getAnchor().getY() != 0){
+			y = -1;
+			if (bumper.getAnchor().getY() > 0)
+				ball.getPosition().setY(bumper.getAnchor().getY() - (bumper.getHeight()/2 + ball.getRadius()));
+			if (bumper.getAnchor().getY() < 0)
+				ball.getPosition().setY(bumper.getAnchor().getY() + (bumper.getHeight()/2 + ball.getRadius()));
 		}
 		
 		Vector3D newVelocity = ball.getVelocity();
-		newVelocity.setX( newVelocity.getX() * xDir );
-		newVelocity.setY( newVelocity.getY() * yDir );
+		newVelocity.setX( newVelocity.getX() * x );
+		newVelocity.setY( newVelocity.getY() * y );
 		ball.setVelocity(newVelocity);
 		
 	}
