@@ -8,6 +8,8 @@ import engine.shapes.Sphere;
 
 public class PoolBall extends GameObject implements MovableBall {
 
+	private static final int gradient = 8;
+	
 	private int number;
 	private double radius;
 	private Vector3D velocity;
@@ -23,7 +25,7 @@ public class PoolBall extends GameObject implements MovableBall {
 	@Override
 	public void build() {
 		
-		addShape(new Sphere(Point3D.Zero, radius));
+		addShape(new Sphere(Point3D.Zero, radius, gradient));
 		
 	}
 

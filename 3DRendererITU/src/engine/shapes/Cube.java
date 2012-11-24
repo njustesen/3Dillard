@@ -1,8 +1,6 @@
-package game.objects;
+package engine.shapes;
 
 import engine.math.Point3D;
-import engine.shapes.Shape3D;
-import engine.shapes.Triangle3D;
 
 public class Cube extends Shape3D {
 
@@ -55,6 +53,30 @@ public class Cube extends Shape3D {
 		triangles.add(new Triangle3D(f,b,h));
 		triangles.add(new Triangle3D(d,b,h));
 
+	}
+
+	public double getHeight() {
+		return height;
+	}
+
+	public void setHeight(double height) {
+		this.height = height;
+	}
+
+	public double getWidth() {
+		return width;
+	}
+
+	public void setWidth(double width) {
+		this.width = width;
+	}
+
+	public double getDepth() {
+		return depth;
+	}
+
+	public void setDepth(double depth) {
+		this.depth = depth;
 	}
 	
 }

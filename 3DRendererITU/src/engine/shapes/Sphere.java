@@ -6,18 +6,20 @@ import engine.math.Point3D;
 
 public class Sphere extends Shape3D{
 
-	double radius;
+	private double radius;
+	private int gradient;
 	
-	public Sphere(Point3D anchor, double radius) {
+	public Sphere(Point3D anchor, double radius, int gradient) {
 		super(anchor);
 		this.radius = radius;
+		this.gradient = gradient;
 		build();
 	}
 
 	@Override
 	public void build() {
-		int N = 24;
-		int M = 24;
+		int N = gradient;
+		int M = gradient;
 		
 		ArrayList<Point3D> points = new ArrayList<Point3D>();
 		

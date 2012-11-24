@@ -27,7 +27,7 @@ public class Game extends JPanel {
 	private static final int screenHeight = 700;
 	
 	private InputManager inputManager; 
-	private PhysicsManager physicsManager; 
+	private PoolPhysicsManager physicsManager; 
 	private Screen screen;
 	private Scene scene;
 	private Renderer renderer;
@@ -44,7 +44,9 @@ public class Game extends JPanel {
 		renderer = new Renderer();
 		
 		inputManager = new InputManager();
-		physicsManager = new PhysicsManager();
+		physicsManager = new PoolPhysicsManager();
+		
+		physicsManager.setupFromScene(scene);
 
     	setBackground(Color.black);
 		
@@ -96,15 +98,14 @@ public class Game extends JPanel {
 		// Add force to ball
 		Random r = new Random();
 		int i = r.nextInt(100);
-		if (i == 1){
-			PoolBall ball = (PoolBall) (scene.getObjects().get(0));
-			ball.addVelocity(new Vector3D(3,1,0));
-			System.out.println("Velocity added");
+		if (i < 8){
+			PoolBall ball = (PoolBall) (scene.getObjects().get(i));
+			ball.addVelocity(new Vector3D(r.nextInt(20)-10,r.nextInt(20)-10,0));
 		}
 		PoolBall ball = (PoolBall) (scene.getObjects().get(0));
 		ArrayList<MovableBall> balls = new ArrayList<MovableBall>();
 		balls.add(ball);
-		physicsManager.moveBalls(balls);
+		physicsManager.move();
 		
 	}
 
