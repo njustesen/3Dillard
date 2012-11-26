@@ -1,14 +1,18 @@
 package engine;
 
+import game.objects.Light;
+
 import java.util.ArrayList;
 
 public abstract class Scene {
 
 	protected ArrayList <GameObject> objects;
+	protected ArrayList <Light> lights;
 	protected Camera camera;
 	
 	public Scene(){
 		objects = new ArrayList<GameObject>();
+		lights = new ArrayList<Light>();
 		buildShapes();
 		setCamera();
 	}
@@ -18,6 +22,10 @@ public abstract class Scene {
 
 	public ArrayList<GameObject> getObjects() {
 		return objects;
+	}
+	
+	public ArrayList<Light> getLights() {
+		return lights;
 	}
 
 	public Camera getCamera() {
