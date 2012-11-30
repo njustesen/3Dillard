@@ -14,6 +14,12 @@ public class Vector3D {
 		this.z = z;
 	}
 	
+	public Vector3D(Vector2D v) {
+		this.x = v.getX();
+		this.y = v.getY();
+		this.z = 0;
+	}
+
 	public double getX(){
 		return x;
 	}
@@ -114,23 +120,5 @@ public class Vector3D {
 		Point3D p = new Point3D(x,y,z);
 		return p;	
 	}
-
-	public void normalize() {
-		
-		if (Math.abs(x) >= Math.abs(y) && Math.abs(x) >= Math.abs(z)){
-			y = y/x;
-			z = z/x;
-			x = 1;
-		} else if (Math.abs(y) >= Math.abs(x) && Math.abs(y) >= Math.abs(z)){
-			x = x/y;
-			z = z/y;
-			y = 1;
-		} else if (Math.abs(y) >= Math.abs(x) && Math.abs(y) >= Math.abs(z)){
-			x = x/y;
-			z = z/y;
-			y = 1;
-		}
-		
-	}	
 	
 }

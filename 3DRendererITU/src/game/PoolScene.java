@@ -17,14 +17,14 @@ public class PoolScene extends Scene {
 			objects.add(ball);
 		}
 		
-		PoolTable table = new PoolTable(new Point3D(0,0,-10), 142, 284, 10, 20, 0.95);
+		PoolTable table = new PoolTable(new Point3D(0,0,-10), 142, 284, 10, 20, 0.98);
 		objects.add(table);
 	}
 
 	@Override
 	public void setCamera() {
 		
-		camera = new Camera(new Point3D(0,0,600),
+		camera = new Camera(new Point3D(0,0,400),
 							new Point3D(0,0,0),
 							new Vector3D(0,1,0), 70);
 		

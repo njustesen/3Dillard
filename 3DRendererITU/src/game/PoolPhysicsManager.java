@@ -3,6 +3,7 @@ package game;
 import java.util.ArrayList;
 import engine.GameObject;
 import engine.Scene;
+import engine.math.Vector2D;
 import engine.math.Vector3D;
 import engine.physics.PhysicsManager;
 import game.objects.Bumper;
@@ -72,25 +73,52 @@ public class PoolPhysicsManager extends PhysicsManager {
 	
 	private void ballCollision(PoolBall ball, PoolBall other) {
 		
-		// Angle
-		Vector3D direction = ball.getPosition().subtract( other.getPosition() ).toVector();
+		Vector3D vectorBetween3D = ball.getPosition().subtract( other.getPosition() ).toVector();
+		Vector3D unitBetween3D = vectorBetween3D.getUnitVector();
 		
-		// Normal
-		direction.normalize();
+		Vector2D unitBetween2D = new Vector2D(unitBetween3D);
+		Vector2D ballVelocity2D = new Vector2D(ball.getVelocity());
+		Vector2D otherVelocity2D = new Vector2D(other.getVelocity());
 		
-		// Impact
-		double impactFromBall = other.getVelocity().getVectorLength();
-		Vector3D effectFromBall = direction.multiply(impactFromBall);
-		double impactFromOther = other.getVelocity().getVectorLength();
-		Vector3D effectFromOther = direction.multiply(impactFromOther);
+		// Calculate for ball
+		if (!ballVelocity2D.equals(Vector2D.Zero)){
 		
-		// Move
+			double angleBetween = Vector2D.angleBetween(ballVelocity2D, unitBetween2D);
+			
+			if(angleBetween > 90){
+				
+				double impact = (angleBetween - 90) / 90;
+				double force = ballVelocity2D.getVectorLength() * impact;
+				
+				Vector2D newVel2D = unitBetween2D.multiply( force );
+				Vector3D newVel3D = new Vector3D(newVel2D).multiply(-1);
+				
+				other.setVelocity(newVel3D);
+				
+			}
+			
+		}
 		
+		// Calculate for other
+		/*
+		if (!otherVelocity2D.equals(Vector2D.Zero)){
 		
-		// Add velocity
-		ball.setVelocity(ball.getVelocity().add(effectFromOther));
-		other.setVelocity(ball.getVelocity().add(effectFromBall));
-		
+			double angleBetween = Vector2D.angleBetween(otherVelocity2D, unitBetween2D);
+			
+			if(angleBetween > 90){
+				
+				double impact = (angleBetween - 90) / 90;
+				double force = otherVelocity2D.getVectorLength() * impact;
+				
+				Vector2D newVel2D = unitBetween2D.multiply( force );
+				Vector3D newVel3D = new Vector3D(newVel2D).multiply(-1);
+				
+				ball.setVelocity(newVel3D);
+				
+			}
+			
+		}
+		*/
 		
 	}
 
