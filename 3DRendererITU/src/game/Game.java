@@ -2,6 +2,7 @@ package game;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
@@ -14,8 +15,9 @@ import engine.Screen;
 import engine.input.InputManager;
 import engine.math.Vector3D;
 import engine.physics.MovableBall;
-import engine.physics.PhysicsManager;
 import engine.shapes.Triangle2D;
+import engine.shapes.Triangle3D;
+import game.objects.Light;
 import game.objects.PoolBall;
 
 
@@ -124,10 +126,20 @@ public class Game extends JPanel {
 		
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		g.setColor(Color.GREEN);
+		
 
 		for(Triangle2D t : renderer.getRenderedTriangles()){
-
+			int[]x = new int[3];
+			int[]y = new int[3];
+			x[0] = (int) t.getA().getX(); x[1] = (int) t.getB().getX(); x[2] = (int) t.getC().getX();			
+			y[0] = (int) t.getA().getY(); y[1] = (int) t.getB().getY(); y[2] = (int) t.getC().getY();
+			Polygon p = new Polygon(x, y, 3);
+			
+			g.setColor(t.getColor());
+			//System.out.println("t2d's color = "+t.getColor());
+			g.fillPolygon(x, y, 3);
+			
+			g.setColor(Color.GREEN);
 			g.drawLine( (int)t.getA().getX(), (int)t.getA().getY(), 
 					 	(int)t.getB().getX(), (int)t.getB().getY());
  
@@ -138,6 +150,15 @@ public class Game extends JPanel {
 						(int)t.getA().getX(), (int)t.getA().getY());
 
 		}
+	}
+	
+	public Color calculateColor(Triangle3D t){
+		int BnW = 0;
+		
+		for(Light l: scene.getLights()){		
+			BnW += (int) t.getSurfaceNormal().getDotProduct(l.getPosition().toVector());
+		}
+		return new Color(BnW, BnW, BnW);
 	}
 	
 }

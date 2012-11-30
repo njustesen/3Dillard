@@ -20,6 +20,12 @@ public class Vector3D {
 		this.z = 0;
 	}
 
+	public Vector3D(Point3D point){
+		this.x = point.getX();
+		this.y = point.getY();
+		this.z = point.getZ();
+	}
+	
 	public double getX(){
 		return x;
 	}
@@ -105,6 +111,11 @@ public class Vector3D {
 	 **/
 	public Vector3D getUnitVector(){
 		Vector3D newVector = new Vector3D(x/getVectorLength(), y/getVectorLength(), z/getVectorLength());
+		return newVector;
+	}
+	
+	public Vector3D getInvertedVector(){
+		Vector3D newVector = new Vector3D(-x, -y, -z);
 		return newVector;
 	}
 	

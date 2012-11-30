@@ -1,9 +1,11 @@
 package game;
 
+import java.awt.Color;
 import engine.Camera;
 import engine.Scene;
 import engine.math.Point3D;
 import engine.math.Vector3D;
+import game.objects.Light;
 import game.objects.PoolBall;
 import game.objects.PoolTable;
 
@@ -19,6 +21,9 @@ public class PoolScene extends Scene {
 		
 		PoolTable table = new PoolTable(new Point3D(0,0,-10), 142, 284, 10, 20, 0.97);
 		objects.add(table);
+		
+		Light light = new Light(new Point3D(0,10000,0), 100, Color.white);
+		lights.add(light);
 	}
 
 	@Override

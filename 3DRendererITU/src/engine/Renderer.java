@@ -1,6 +1,9 @@
 package engine;
 
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.PriorityQueue;
+
 
 import engine.math.Matrix;
 import engine.math.Point2D;
@@ -9,15 +12,18 @@ import engine.math.Vector3D;
 import engine.shapes.Shape3D;
 import engine.shapes.Triangle2D;
 import engine.shapes.Triangle3D;
+import game.objects.Light;
 
 
 public class Renderer {
 	
 	private ArrayList<Triangle2D> lastRendering;
+	private PriorityQueue<Triangle3D> pq;
 	
 	public Renderer(){
 		
-		lastRendering = new ArrayList<Triangle2D>();
+	//	lastRendering = new ArrayList<Triangle2D>();
+		pq = new PriorityQueue<Triangle3D>();
 		
 	}
 
@@ -62,36 +68,54 @@ public class Renderer {
 				   											  {0,(2*near)/viewPlaneHeight,0,0},
 				   											  {0,0,-(far+near)/(far-near),(-2*far*near)/(far-near)},
 				   											  {0,0,-1,0}});
+		int newColor = 0;
 		
 		for(GameObject obj : scene.getObjects()){
 			for(Shape3D shape: obj.getShapes()){
 				for(Triangle3D t: shape.getTriangles()){
 					
+					
 					// Triangle to object view
-					Point3D a3 = toObjectView(t.getPointA(), shape);
-					Point3D b3 = toObjectView(t.getPointB(), shape);
-					Point3D c3 = toObjectView(t.getPointC(), shape);
-					
+					Triangle3D objectTriangle = toObjectView(t, shape);
+				
 					// Triangle to world view
-					a3 = toWorldView(a3, obj);
-					b3 = toWorldView(b3, obj);
-					c3 = toWorldView(c3, obj);
+					Triangle3D worldTriangle = toWorldView(objectTriangle, obj);
 					
-					// Render points
-					Point2D a2 = renderVertice(a3, screen, projectionMatrix, camLookMatrix, camTransMatrix);
-					Point2D b2 = renderVertice(b3, screen, projectionMatrix, camLookMatrix, camTransMatrix);
-					Point2D c2 = renderVertice(c3, screen, projectionMatrix, camLookMatrix, camTransMatrix);
+					Triangle3D viewspaceTriangle = createViewspaceTriangle(worldTriangle, screen, projectionMatrix, camLookMatrix, camTransMatrix);
 					
-					// Remove if outside screen
-					if (!(screen.isOutsideScreen(a2) && screen.isOutsideScreen(b2) && screen.isOutsideScreen(c2))){
+					
+					for(Light light: scene.getLights()){
+						Vector3D lightV3D = light.getPosition().toVector().subtract(t.getCenter().toVector());
 						
-						newRendering.add(new Triangle2D(a2,b2,c2)); 
-						
+					//	System.out.println("viewspaceNormal light dot = "+(int) (viewspaceTriangle.getSurfaceNormal().getDotProduct(lightV3D)*light.getIntensity()));
+					//	System.out.println("l vector = "+light.getPosition());
+						newColor = (int)(viewspaceTriangle.getSurfaceNormal().getDotProduct(lightV3D)*light.getIntensity());
 					}
+					viewspaceTriangle.setColor(newColor);
+					pq.add(viewspaceTriangle);
+				
+					
 				}
 			}
-		}		
+		}
 		
+		while(!pq.isEmpty()){
+			Triangle3D t = pq.poll();
+			
+			Point2D a2 = make2D(screen, t.getPointA());
+			Point2D b2 = make2D(screen, t.getPointB());
+			Point2D c2 = make2D(screen, t.getPointC());
+			
+			// Remove if outside screen
+			if (!(screen.isOutsideScreen(a2) && screen.isOutsideScreen(b2) && screen.isOutsideScreen(c2))){
+				Triangle2D t2 = new Triangle2D(a2,b2,c2);
+				t2.setColor(t.getColor());
+				newRendering.add(t2); 
+				
+			}
+		}
+		
+		pq.clear();
 		lastRendering = newRendering;
 	}
 	
@@ -108,6 +132,32 @@ public class Renderer {
 							p.getZ() + obj.getPosition().getZ()	);
 	}
 
+	private Triangle3D toObjectView(Triangle3D t, Shape3D shape) {
+		return new Triangle3D(new Point3D(t.getPointA().getX() + shape.getAnchor().getX(),
+											t.getPointA().getY() + shape.getAnchor().getY(),
+												t.getPointA().getZ() + shape.getAnchor().getZ()),
+							  new Point3D(t.getPointB().getX() + shape.getAnchor().getX(),
+									  		t.getPointB().getY() + shape.getAnchor().getY(),
+									  			t.getPointB().getZ() + shape.getAnchor().getZ()),
+							  new Point3D(t.getPointC().getX() + shape.getAnchor().getX(),
+									  		t.getPointC().getY() + shape.getAnchor().getY(),
+									  			t.getPointC().getZ() + shape.getAnchor().getZ()));
+	}
+
+	private Triangle3D toWorldView(Triangle3D t, GameObject obj) {
+		
+		return new Triangle3D(new Point3D(t.getPointA().getX() + obj.getPosition().getX(),
+											t.getPointA().getY() + obj.getPosition().getY(),
+												t.getPointA().getZ() + obj.getPosition().getZ()),
+							  new Point3D(t.getPointB().getX() + obj.getPosition().getX(),
+											t.getPointB().getY() + obj.getPosition().getY(),
+												t.getPointB().getZ() + obj.getPosition().getZ()),
+							  new Point3D(t.getPointC().getX() + obj.getPosition().getX(),
+											t.getPointC().getY() + obj.getPosition().getY(),
+												t.getPointC().getZ() + obj.getPosition().getZ())
+							);
+	}
+
 	/**
 	 * Renders a vertex.
 	 * @param p
@@ -117,20 +167,37 @@ public class Renderer {
 	 * @param cameraTransMatrix
 	 * @return
 	 */
-	private Point2D renderVertice(	Point3D p, 
-									Screen screen, 
-									Matrix projectionMatrix, 
-									Matrix cameraLookMatrix, 
-									Matrix cameraTransMatrix){
+	private Triangle3D createViewspaceTriangle(	Triangle3D t, 
+												Screen screen, 
+												Matrix projectionMatrix, 
+												Matrix cameraLookMatrix, 
+												Matrix cameraTransMatrix){
 		
 		Matrix viewspaceMatrix = projectionMatrix.multiplication(cameraLookMatrix.multiplication(cameraTransMatrix));
 
-		Point3D viewspacePoint = viewspaceMatrix.multiplication(p);
+		Point3D viewspacePointA = viewspaceMatrix.multiplication(t.getPointA());
+		Point3D viewspacePointB = viewspaceMatrix.multiplication(t.getPointB());
+		Point3D viewspacePointC = viewspaceMatrix.multiplication(t.getPointC());
+			
+		viewspacePointA.setX(viewspacePointA.getX()/viewspacePointA.getW());
+		viewspacePointA.setY(viewspacePointA.getY()/viewspacePointA.getW());
+		viewspacePointA.setZ(viewspacePointA.getZ()/viewspacePointA.getW());
 		
-		viewspacePoint.setX(viewspacePoint.getX()/viewspacePoint.getW());
-		viewspacePoint.setY(viewspacePoint.getY()/viewspacePoint.getW());
-		viewspacePoint.setZ(viewspacePoint.getZ()/viewspacePoint.getW());
-
+		viewspacePointB.setX(viewspacePointB.getX()/viewspacePointB.getW());
+		viewspacePointB.setY(viewspacePointB.getY()/viewspacePointB.getW());
+		viewspacePointB.setZ(viewspacePointB.getZ()/viewspacePointB.getW());
+		
+		viewspacePointC.setX(viewspacePointC.getX()/viewspacePointC.getW());
+		viewspacePointC.setY(viewspacePointC.getY()/viewspacePointC.getW());
+		viewspacePointC.setZ(viewspacePointC.getZ()/viewspacePointC.getW());
+		
+		Triangle3D viewspaceTriangle = new Triangle3D(viewspacePointA, viewspacePointB, viewspacePointC);
+		
+		return viewspaceTriangle;
+	}
+	
+	private Point2D make2D(Screen screen, Point3D viewspacePoint){
+		
 		int x = (int) (viewspacePoint.getX()*(screen.getWidth()/2)+(screen.getWidth()/2));
 		int y = (int) (viewspacePoint.getY()*(screen.getHeight()/2)+(screen.getHeight()/2));
 		
