@@ -19,7 +19,7 @@ public class PoolScene extends Scene {
 			objects.add(ball);
 		}
 		
-		PoolTable table = new PoolTable(new Point3D(0,0,-10), 142, 284, 10, 20, 0.97);
+		PoolTable table = new PoolTable(new Point3D(0,0,-10), 142, 284, 10, 20, 0.99);
 		objects.add(table);
 		
 		Light light = new Light(new Point3D(0,10000,0), 100, Color.white);
