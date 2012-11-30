@@ -83,17 +83,26 @@ public class PoolPhysicsManager extends PhysicsManager {
 		// Calculate for ball
 		if (!ballVelocity2D.equals(Vector2D.Zero)){
 		
-			double angleBetween = Vector2D.angleBetween(ballVelocity2D, unitBetween2D);
+			// The angle between the two balls and the ball velocity
+			double collisionAngle = Vector2D.angleBetween(ballVelocity2D, unitBetween2D);
 			
-			if(angleBetween > 90){
+			if(collisionAngle > 90){
 				
-				double impact = (angleBetween - 90) / 90;
-				double force = ballVelocity2D.getVectorLength() * impact;
+				double impactOther = (collisionAngle - 90) / 90;
+				double impactBall = 1 - impactOther;
+				double forceOther = ballVelocity2D.getVectorLength() * impactOther;
+				double forceBall = ballVelocity2D.getVectorLength() * impactBall;
+
+				Vector2D newVelOther2D = unitBetween2D.multiply(forceOther).multiply( -1 );
+				Vector3D newVelOther3D = new Vector3D(newVelOther2D);
 				
-				Vector2D newVel2D = unitBetween2D.multiply( force );
-				Vector3D newVel3D = new Vector3D(newVel2D).multiply(-1);
+				other.setVelocity(newVelOther3D);
 				
-				other.setVelocity(newVel3D);
+				Vector2D newVelBall2D = ballVelocity2D.subtract(newVelOther2D);
+				Vector3D newVelBall3D = new Vector3D(newVelBall2D);
+				
+				ball.setVelocity(newVelBall3D);
+				
 				
 			}
 			

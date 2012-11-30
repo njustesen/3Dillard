@@ -97,10 +97,10 @@ public class Game extends JPanel {
 		
 		// Add force to ball
 		Random r = new Random();
-		int i = r.nextInt(100);
+		int i = r.nextInt(110);
 		if (i < 1){
 			PoolBall ball = (PoolBall) (scene.getObjects().get(0));
-			ball.addVelocity(new Vector3D(r.nextInt(20)-10,r.nextInt(20)-10,0));
+			ball.addVelocity(new Vector3D(r.nextInt(16)-8,r.nextInt(16)-8,0));
 		}
 		PoolBall ball = (PoolBall) (scene.getObjects().get(0));
 		ArrayList<MovableBall> balls = new ArrayList<MovableBall>();
