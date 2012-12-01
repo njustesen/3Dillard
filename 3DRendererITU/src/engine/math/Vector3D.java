@@ -132,4 +132,12 @@ public class Vector3D {
 		return p;	
 	}
 	
+	public boolean equals(Object o) {
+	    if (o instanceof Vector3D) {
+	    	Vector3D v = (Vector3D) o;
+	      	if (v.getX() == this.getX() && v.getY() == this.getY() && v.getZ() == this.getZ()) return true;
+	    }
+	    return false;
+	}	
+	
 }

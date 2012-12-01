@@ -1,6 +1,9 @@
 package game.objects;
 
+import javax.xml.transform.sax.TransformerHandler;
+
 import engine.GameObject;
+import engine.TransformManager;
 import engine.math.Point3D;
 import engine.math.Vector3D;
 import engine.physics.MovableBall;
@@ -8,7 +11,7 @@ import engine.shapes.Sphere;
 
 public class PoolBall extends GameObject implements MovableBall {
 
-	private static final int gradient = 16;
+	private static final int gradient = 10;
 	
 	private int number;
 	private double radius;
@@ -57,9 +60,30 @@ public class PoolBall extends GameObject implements MovableBall {
 
 	@Override
 	public void move(Vector3D move) {
+		// Move
 		position.setX(position.getX() + move.getX());
 		position.setY(position.getY() + move.getY());
 		position.setZ(position.getZ() + move.getZ());
+		
+		// Rotate
+		double x = 0;
+		double y = 0;
+		double z = 0;
+		if (move.getY() != 0){
+			x = (radius * 2 * Math.PI) / -move.getY();
+			x = (Math.PI*2)/x;
+		} else {
+			x = 0;
+		}
+		
+		if (move.getX() != 0){
+			y = (radius * 2 * Math.PI) / move.getX();
+			y = (Math.PI*2)/y;
+		} else {
+			y = 0;
+		}
+		
+		TransformManager.rotateObject(this, x, y, 0);
 	}
 
 	@Override

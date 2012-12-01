@@ -12,7 +12,7 @@ import game.objects.PoolTable;
 
 public class PoolPhysicsManager extends PhysicsManager {
 
-	private static final double velocityLimit = 0.085;
+	private static final double velocityLimit = 0.065;
 	private ArrayList<PoolBall> balls;
 	private PoolTable table;
 	
@@ -103,7 +103,6 @@ public class PoolPhysicsManager extends PhysicsManager {
 		Vector3D unitBetween3D = vectorBetween3D.getUnitVector();
 		Vector2D unitBetween2D = new Vector2D(unitBetween3D);
 		Vector2D velocityA2D = new Vector2D(a.getVelocity());
-		Vector2D velocityB2D = new Vector2D(b.getVelocity());
 		
 		if (!velocityA2D.equals(Vector2D.Zero)){
 		

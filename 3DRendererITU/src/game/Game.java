@@ -99,11 +99,11 @@ public class Game extends JPanel {
 		
 		// Add force to ball
 		Random r = new Random();
-		int i = r.nextInt(30);
+		int i = r.nextInt(25);
 		if (i < 1){
 			PoolBall ball = (PoolBall) (scene.getObjects().get(0));
-			if (ball.getVelocity() != Vector3D.Zero){
-				ball.addVelocity(new Vector3D(r.nextInt(24)-12,r.nextInt(24)-12,0));
+			if (ball.getVelocity().equals(Vector3D.Zero)){
+				ball.addVelocity(new Vector3D(r.nextInt(16)-8,r.nextInt(16)-8,0));
 				System.out.println("POWER!");
 			}
 		}
