@@ -12,6 +12,7 @@ import game.objects.PoolTable;
 
 public class PoolPhysicsManager extends PhysicsManager {
 
+	private static final double velocityLimit = 0.085;
 	private ArrayList<PoolBall> balls;
 	private PoolTable table;
 	
@@ -32,6 +33,10 @@ public class PoolPhysicsManager extends PhysicsManager {
 					ball.getVelocity().getX() * table.getFriction(), 
 					ball.getVelocity().getY() * table.getFriction(), 
 					0);
+			
+			if (vel.getVectorLength() < velocityLimit){
+				vel = new Vector3D(0, 0, 0);
+			}
 			
 			ball.setVelocity(vel);
 			
@@ -57,15 +62,19 @@ public class PoolPhysicsManager extends PhysicsManager {
 	}
 
 	private boolean checkBallCollision(PoolBall ball, PoolBall other) {
-	
-		double distanceX = Math.abs(ball.getPosition().getX() - other.getPosition().getX());
-		double distanceY = Math.abs(ball.getPosition().getY() - other.getPosition().getY());
 		
-		// X
-		if (distanceX < ball.getRadius() + other.getRadius() && distanceY < ball.getRadius() + other.getRadius()){
-			if (distanceX > ball.getRadius() - other.getRadius() && distanceY > ball.getRadius() - other.getRadius()){
-				return true;
-			}
+		if (ball == other){
+			
+			return false;
+			
+		}
+		
+		Vector3D vectorBetween3D = ball.getPosition().subtract( other.getPosition() ).toVector();
+		
+		if (vectorBetween3D.getVectorLength() < ball.getRadius() + other.getRadius()){
+			
+			return true;
+			
 		}
 		
 		return false;
@@ -77,8 +86,10 @@ public class PoolPhysicsManager extends PhysicsManager {
 		Vector3D unitBetween3D = vectorBetween3D.getUnitVector();
 		Vector2D unitBetween2D = new Vector2D(unitBetween3D);
 		Vector2D ballVelocity2D = new Vector2D(ball.getVelocity());
-		
 		Vector2D otherVelocity2D = new Vector2D(other.getVelocity());
+		
+		// Correct positions
+		ball.setPosition( other.getPosition().add(unitBetween3D.multiply(ball.getRadius() * 2.0) ) );
 		
 		// Calculate for ball
 		if (!ballVelocity2D.equals(Vector2D.Zero)){
@@ -111,12 +122,12 @@ public class PoolPhysicsManager extends PhysicsManager {
 			// The angle between the two balls and the other velocity
 			double collisionAngle = Vector2D.angleBetween(otherVelocity2D, unitBetween2D);
 			
-			if(collisionAngle > 90){
+			if(collisionAngle < 90){
 				
-				double impact = (collisionAngle - 90) / 90;
+				double impact = (collisionAngle) / 90;
 				double force = otherVelocity2D.getVectorLength() * impact;
 
-				Vector2D newVelBall2D = unitBetween2D.multiply(force).multiply( -1 );
+				Vector2D newVelBall2D = unitBetween2D.multiply(force);
 				Vector3D newVelBall3D = new Vector3D(newVelBall2D);
 				newVelBall3D = newVelBall3D.add(ball.getVelocity());
 				

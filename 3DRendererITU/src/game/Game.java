@@ -101,8 +101,11 @@ public class Game extends JPanel {
 		Random r = new Random();
 		int i = r.nextInt(100);
 		if (i < 1){
-			PoolBall ball = (PoolBall) (scene.getObjects().get(0));
-			ball.addVelocity(new Vector3D(r.nextInt(24)-12,r.nextInt(24)-12,0));
+			PoolBall ball = (PoolBall) (scene.getObjects().get(1));
+			if (ball.getVelocity() != Vector3D.Zero){
+				ball.addVelocity(new Vector3D(r.nextInt(4)-2,r.nextInt(4)-2,0));
+				System.out.println("POWER!");
+			}
 		}
 		PoolBall ball = (PoolBall) (scene.getObjects().get(0));
 		ArrayList<MovableBall> balls = new ArrayList<MovableBall>();

@@ -88,4 +88,15 @@ public class Point3D {
 		Point3D newPoint = new Point3D(x/p.x, y/p.y, z/p.z);
 		return newPoint;	
 	}
+
+	public Point3D subtract(Vector3D v) {
+		// TODO Auto-generated method stub
+		return new Point3D(x - v.getX(), y - v.getY(), z - v.getZ());
+	}
+
+	public Point3D add(Vector3D v) {
+		// TODO Auto-generated method stub
+		return new Point3D(x + v.getX(), y + v.getY(), z + v.getZ());
+	}
+
 }
