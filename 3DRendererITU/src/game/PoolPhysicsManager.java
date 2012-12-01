@@ -63,86 +63,66 @@ public class PoolPhysicsManager extends PhysicsManager {
 
 	private boolean checkBallCollision(PoolBall ball, PoolBall other) {
 		
-		if (ball == other){
-			
-			return false;
-			
-		}
+		if (ball == other) return false;
 		
-		Vector3D vectorBetween3D = ball.getPosition().subtract( other.getPosition() ).toVector();
+		Vector3D vectorBetween = ball.getPosition().subtract( other.getPosition() ).toVector();
 		
-		if (vectorBetween3D.getVectorLength() < ball.getRadius() + other.getRadius()){
-			
-			return true;
-			
-		}
+		if (vectorBetween.getVectorLength() < ball.getRadius() + other.getRadius()) return true;
 		
 		return false;
 	}
 	
-	private void ballCollision(PoolBall ball, PoolBall other) {
-		
-		Vector3D vectorBetween3D = ball.getPosition().subtract( other.getPosition() ).toVector();
-		Vector3D unitBetween3D = vectorBetween3D.getUnitVector();
-		Vector2D unitBetween2D = new Vector2D(unitBetween3D);
-		Vector2D ballVelocity2D = new Vector2D(ball.getVelocity());
-		Vector2D otherVelocity2D = new Vector2D(other.getVelocity());
+	private void ballCollision(PoolBall a, PoolBall b) {
 		
 		// Correct positions
-		ball.setPosition( other.getPosition().add(unitBetween3D.multiply(ball.getRadius() * 2.0) ) );
+		Vector3D vectorBetween3D = a.getPosition().subtract( b.getPosition() ).toVector();
+		Vector3D unitBetween3D = vectorBetween3D.getUnitVector();
+		a.setPosition( b.getPosition().add(unitBetween3D.multiply(a.getRadius() * 2.0) ) );
 		
-		// Calculate for ball
-		if (!ballVelocity2D.equals(Vector2D.Zero)){
+		Vector3D newVelA = new Vector3D(0,0,0);
+		Vector3D newVelB = new Vector3D(0,0,0);
+		
+		Vector3D aToB = getTransferedForce(a, b);
+		newVelB = newVelB.add(aToB);
+		newVelA = newVelA.subtract(aToB);
+		
+		Vector3D bToA = getTransferedForce(b, a);
+		newVelA = newVelA.add(bToA);
+		newVelB = newVelB.subtract(bToA);
+		
+		newVelA = newVelA.add(a.getVelocity());
+		newVelB = newVelB.add(b.getVelocity());
+		a.setVelocity(newVelA);
+		b.setVelocity(newVelB);
+		
+	}
+		
+	private Vector3D getTransferedForce(PoolBall a, PoolBall b) {
+		
+		Vector3D vectorBetween3D = a.getPosition().subtract( b.getPosition() ).toVector();
+		Vector3D unitBetween3D = vectorBetween3D.getUnitVector();
+		Vector2D unitBetween2D = new Vector2D(unitBetween3D);
+		Vector2D velocityA2D = new Vector2D(a.getVelocity());
+		Vector2D velocityB2D = new Vector2D(b.getVelocity());
+		
+		if (!velocityA2D.equals(Vector2D.Zero)){
 		
 			// The angle between the two balls and the ball velocity
-			double collisionAngle = Vector2D.angleBetween(ballVelocity2D, unitBetween2D);
+			double collisionAngle = Vector2D.angleBetween(unitBetween2D, velocityA2D);
 			
 			if(collisionAngle > 90){
 				
 				double impactOther = (collisionAngle - 90) / 90;
-				double forceOther = ballVelocity2D.getVectorLength() * impactOther;
+				double forceOther = velocityA2D.getVectorLength() * impactOther;
 
-				Vector2D newVelOther2D = unitBetween2D.multiply(forceOther).multiply( -1 );
-				Vector3D newVelOther3D = new Vector3D(newVelOther2D);
-				
-				other.setVelocity(newVelOther3D);
-				
-				Vector2D newVelBall2D = ballVelocity2D.subtract(newVelOther2D);
-				Vector3D newVelBall3D = new Vector3D(newVelBall2D);
-				
-				ball.setVelocity(newVelBall3D);
+				Vector2D newVelB2D = unitBetween2D.multiply(forceOther).multiply( -1 );
+				return new Vector3D(newVelB2D);
 				
 			}
 			
 		}
 		
-		// Calculate for other
-		if (!otherVelocity2D.equals(Vector2D.Zero)){
-		
-			// The angle between the two balls and the other velocity
-			double collisionAngle = Vector2D.angleBetween(otherVelocity2D, unitBetween2D);
-			
-			if(collisionAngle < 90){
-				
-				double impact = (collisionAngle) / 90;
-				double force = otherVelocity2D.getVectorLength() * impact;
-
-				Vector2D newVelBall2D = unitBetween2D.multiply(force);
-				Vector3D newVelBall3D = new Vector3D(newVelBall2D);
-				newVelBall3D = newVelBall3D.add(ball.getVelocity());
-				
-				ball.setVelocity(newVelBall3D);
-				
-				Vector2D newVelOther2D = otherVelocity2D.subtract(newVelBall2D);
-				Vector3D newVelOther3D = new Vector3D(newVelOther2D);
-				newVelOther3D = newVelOther3D.add(other.getVelocity());
-				
-				other.setVelocity(newVelOther3D);
-				
-			}
-			
-		}
-
+		return new Vector3D(0,0,0);
 		
 	}
 
