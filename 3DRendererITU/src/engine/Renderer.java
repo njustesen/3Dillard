@@ -93,8 +93,6 @@ public class Renderer {
 					}
 					viewspaceTriangle.setColor(newColor);
 					pq.add(viewspaceTriangle);
-				
-					
 				}
 			}
 		}

@@ -6,12 +6,12 @@ import engine.math.Vector3D;
 
 public class Camera {
 
-	private Point3D position;
-	private Point3D lookPoint;
-	private Vector3D up;
-	private int angle;
-	private int movementSpeed;
-	private int rotationSpeed;
+	protected Point3D position;
+	protected Point3D lookPoint;
+	protected Vector3D up;
+	protected int angle;
+	protected int movementSpeed;
+	protected int rotationSpeed;
 	
 	public Camera(Point3D position, Point3D lookPoint, Vector3D up, int angle){
 		this.position = position;
@@ -116,4 +116,11 @@ public class Camera {
 	public void moveLookpointY(int i) {
 		lookPoint.setY(lookPoint.getY() + i);
 	}
+
+	public void setLookpoint(Point3D p) {
+		lookPoint.setX(p.getX());
+		lookPoint.setY(p.getY());
+		lookPoint.setZ(p.getZ());
+	}
+
 }

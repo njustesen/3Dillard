@@ -2,6 +2,7 @@ package engine;
 
 import engine.math.Matrix;
 import engine.math.Point3D;
+import engine.math.Vector3D;
 import engine.shapes.Shape3D;
 import engine.shapes.Triangle3D;
 
@@ -36,7 +37,27 @@ public class TransformManager {
 		
 	}
 	
-	public static Point3D rotatePointX(Point3D vector, double degrees){
+	public static Vector3D rotateVector(Vector3D vector, double degreesX, double degreesY, double degreesZ){
+				
+		Vector3D result = new Vector3D(vector.getX(), vector.getY(), vector.getZ());
+	
+		if (degreesX != 0){
+			result = rotateVectorX(result, degreesX);
+		}
+		
+		if (degreesY != 0){
+			result = rotateVectorY(result, degreesY);
+		}
+		
+		if (degreesZ != 0){
+			result = rotateVectorZ(result, degreesZ);
+		}
+		
+		return result;
+		
+	}
+	
+	public static Point3D rotatePointX(Point3D point, double degrees){
 
 		double cosD = Math.cos(degrees);
 		double sinD = Math.sin(degrees);
@@ -53,9 +74,9 @@ public class TransformManager {
 
 		double[][] arrayB = 
 			{
-			{ vector.getX() },
-			{ vector.getY() },
-			{ vector.getZ() },
+			{ point.getX() },
+			{ point.getY() },
+			{ point.getZ() },
 			{ 1.0f },
 			};
 		
@@ -67,7 +88,7 @@ public class TransformManager {
 		
 	}
 	
-	public static Point3D rotatePointY(Point3D vector, double degrees){
+	public static Point3D rotatePointY(Point3D point, double degrees){
 
 		double cosD = Math.cos(degrees);
 		double sinD = Math.sin(degrees);
@@ -84,9 +105,9 @@ public class TransformManager {
 
 		double[][] arrayB = 
 			{
-			{ vector.getX() },
-			{ vector.getY() },
-			{ vector.getZ() },
+			{ point.getX() },
+			{ point.getY() },
+			{ point.getZ() },
 			{ 1.0f },
 			};
 		
@@ -98,7 +119,7 @@ public class TransformManager {
 		
 	}
 	
-	public static Point3D rotatePointZ(Point3D vector, double degrees){
+	public static Point3D rotatePointZ(Point3D point, double degrees){
 
 		double cosD = Math.cos(degrees);
 		double sinD = Math.sin(degrees);
@@ -115,9 +136,9 @@ public class TransformManager {
 
 		double[][] arrayB = 
 			{
-			{ vector.getX() },
-			{ vector.getY() },
-			{ vector.getZ() },
+			{ point.getX() },
+			{ point.getY() },
+			{ point.getZ() },
 			{ 1.0f },
 			};
 		
@@ -126,6 +147,24 @@ public class TransformManager {
 		Matrix result = matrixA.multiplication(matrixB);
 
 		return result.toPoint();
+		
+	}
+	
+	public static Vector3D rotateVectorX(Vector3D vector, double degrees){
+		
+		return rotatePointX(vector.toPoint(), degrees).toVector();
+		
+	}
+
+	public static Vector3D rotateVectorY(Vector3D vector, double degrees){
+		
+		return rotatePointY(vector.toPoint(), degrees).toVector();
+		
+	}
+	
+	public static Vector3D rotateVectorZ(Vector3D vector, double degrees){
+		
+		return rotatePointZ(vector.toPoint(), degrees).toVector();
 		
 	}
 	

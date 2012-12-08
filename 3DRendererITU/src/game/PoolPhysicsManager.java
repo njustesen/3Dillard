@@ -13,25 +13,28 @@ import game.objects.PoolTable;
 public class PoolPhysicsManager extends PhysicsManager {
 
 	private static final double velocityLimit = 0.065;
+	private int multiplier;
 	private ArrayList<PoolBall> balls;
 	private PoolTable table;
 	
-	public PoolPhysicsManager(){
+	public PoolPhysicsManager(int multiplier){
 		
 		balls = new ArrayList<PoolBall>();
+		
+		this.multiplier = multiplier;
 		
 	}
 
 	@Override
-	public void move() {
+	public void move(long delta) {
 		
 		// Move balls
 		for(PoolBall ball : balls){
 			
 			// FRICTION - Slow down velocity
 			Vector3D vel = new Vector3D(
-					ball.getVelocity().getX() * table.getFriction(), 
-					ball.getVelocity().getY() * table.getFriction(), 
+					ball.getVelocity().getX() * table.getFriction() * (delta / multiplier), 
+					ball.getVelocity().getY() * table.getFriction() * (delta / multiplier), 
 					0);
 			
 			if (vel.getVectorLength() < velocityLimit){
@@ -41,7 +44,7 @@ public class PoolPhysicsManager extends PhysicsManager {
 			ball.setVelocity(vel);
 			
 			// Move ball
-			ball.move(ball.getVelocity());
+			ball.move(ball.getVelocity().multiply( (delta / multiplier) ));
 			
 			// Test collision with bumpers
 			checkBumperCollisions(ball);
@@ -225,5 +228,5 @@ public class PoolPhysicsManager extends PhysicsManager {
 		}
 		
 	}
-	
+
 }

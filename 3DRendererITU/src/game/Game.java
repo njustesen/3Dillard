@@ -13,12 +13,14 @@ import engine.Renderer;
 import engine.Scene;
 import engine.Screen;
 import engine.input.InputManager;
+import engine.math.Point3D;
 import engine.math.Vector3D;
 import engine.physics.MovableBall;
 import engine.shapes.Triangle2D;
 import engine.shapes.Triangle3D;
 import game.objects.Light;
 import game.objects.PoolBall;
+import game.objects.PoolCamera;
 
 
 @SuppressWarnings("serial")
@@ -31,8 +33,10 @@ public class Game extends JPanel {
 	private InputManager inputManager; 
 	private PoolPhysicsManager physicsManager; 
 	private Screen screen;
-	private Scene scene;
+	private PoolScene scene;
 	private Renderer renderer;
+	
+	private boolean shooting;
 	
 	/**
 	 * Constructor for Game.
@@ -46,7 +50,7 @@ public class Game extends JPanel {
 		renderer = new Renderer();
 		
 		inputManager = new InputManager();
-		physicsManager = new PoolPhysicsManager();
+		physicsManager = new PoolPhysicsManager(30);
 		
 		physicsManager.setupFromScene(scene);
 
@@ -61,6 +65,7 @@ public class Game extends JPanel {
         setSize(screenWidth, screenHeight);
         
         f.addKeyListener(inputManager);
+        f.addMouseListener(inputManager);
 		
 	}
 	
@@ -68,11 +73,13 @@ public class Game extends JPanel {
 	 * Game loop.
 	 */
 	public void run() {
+		init();
 		long lastUpdateTime = new Date().getTime();
 		while(true){
 			long delta = new Date().getTime() - lastUpdateTime;
 			if (delta > 1000 / FPS){
 				lastUpdateTime = new Date().getTime();
+				
 				update(delta);
 				draw();
 			} else {
@@ -83,6 +90,15 @@ public class Game extends JPanel {
 				}
 			}
 		}
+	}
+	
+	private void init(){
+		
+		// Move camera
+		scene.getCamera().setLookpoint( scene.getCueBall().getPosition() );
+		
+		shooting = false;
+		
 	}
 	
 	/**
@@ -98,19 +114,36 @@ public class Game extends JPanel {
 		scene.getCamera().moveLookpointY(-inputManager.getVerticalWASD() * scene.getCamera().getRotationSpeed());
 		
 		// Add force to ball
-		Random r = new Random();
-		int i = r.nextInt(25);
-		if (i < 1){
-			PoolBall ball = (PoolBall) (scene.getObjects().get(0));
-			if (ball.getVelocity().equals(Vector3D.Zero)){
-				ball.addVelocity(new Vector3D(r.nextInt(16)-8,r.nextInt(16)-8,0));
-				System.out.println("POWER!");
+		shoot();
+
+		// Simulate physics
+		physicsManager.move(delta);
+		
+	}
+	
+	private void shoot(){
+		
+		if (inputManager.isMouseLeftDown() && scene.getCueBall().getVelocity().equals(Vector3D.Zero)){
+			
+			shooting = true;
+			
+		} else {
+		
+			if (shooting && inputManager.getMouseDownTime() > 0){
+						
+				Vector3D force = ((PoolCamera) scene.getCamera()).getShootingDirection();
+				double power = Math.min(16, inputManager.getMouseDownTime() / 100);
+				force = force.multiply(power);
+						
+				scene.getCueBall().addVelocity( force );
+				
+				shooting = false;
 			}
+	
+			// Move camera
+			scene.getCamera().setLookpoint( scene.getCueBall().getPosition() );
+			
 		}
-		PoolBall ball = (PoolBall) (scene.getObjects().get(0));
-		ArrayList<MovableBall> balls = new ArrayList<MovableBall>();
-		balls.add(ball);
-		physicsManager.move();
 		
 	}
 
@@ -140,7 +173,7 @@ public class Game extends JPanel {
 			
 			g.setColor(t.getColor());
 			//System.out.println("t2d's color = "+t.getColor());
-			g.fillPolygon(x, y, 3);
+			//g.fillPolygon(x, y, 3);
 			
 			g.setColor(Color.GREEN);
 			g.drawLine( (int)t.getA().getX(), (int)t.getA().getY(), 

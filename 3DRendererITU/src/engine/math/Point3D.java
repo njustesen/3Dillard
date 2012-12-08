@@ -15,6 +15,12 @@ public class Point3D {
 		this.w = 1;
 	}
 	
+	public Point3D(Point3D p) {
+		this.x = p.getX();
+		this.y = p.getY();
+		this.z = p.getZ();
+	}
+
 	public double getX(){
 		return x;
 	}

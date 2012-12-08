@@ -7,9 +7,12 @@ import engine.math.Point3D;
 import engine.math.Vector3D;
 import game.objects.Light;
 import game.objects.PoolBall;
+import game.objects.PoolCamera;
 import game.objects.PoolTable;
 
 public class PoolScene extends Scene {
+	
+	PoolBall cueBall;
 
 	@Override
 	public void buildShapes() {
@@ -18,8 +21,10 @@ public class PoolScene extends Scene {
 		double diameter = 5.4;
 		double offset = 0.95;
 		
-		objects.add( new PoolBall(0, diameter/2, new Point3D(100, 0, 0)) );
+		cueBall = new PoolBall(0, diameter/2, new Point3D(100, 0, 0));
 		
+		objects.add( cueBall );
+				
 		objects.add( new PoolBall(1, diameter/2, new Point3D(triangleX-diameter*offset, 0, 0)) );
 		
 		objects.add( new PoolBall(2, diameter/2, new Point3D(triangleX-diameter*2*offset, diameter/2, 0)) );
@@ -50,13 +55,17 @@ public class PoolScene extends Scene {
 	@Override
 	public void setCamera() {
 		
-		camera = new Camera(new Point3D(-100,0,100),
-							new Point3D(-100,0,0),
-							new Vector3D(0,1,0), 70);
+		camera = new PoolCamera(new Point3D(400,0,200),
+							new Point3D(0,0,0),
+							new Vector3D(0,0,1), 70);
 		
 		camera.setMovementSpeed(30);
 		camera.setRotationSpeed(30);
 		
 	}
-	
+
+	public PoolBall getCueBall() {
+		return cueBall;
+	}
+
 }

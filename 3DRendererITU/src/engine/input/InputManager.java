@@ -1,10 +1,22 @@
 package engine.input;
+import java.awt.MouseInfo;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+
+import engine.Camera;
+import engine.Screen;
+import engine.TransformManager;
+import engine.math.Point2D;
+import engine.math.Point3D;
+import engine.math.Vector2D;
+import engine.math.Vector3D;
 
 
-public class InputManager implements KeyListener {
-
+public class InputManager implements KeyListener, MouseListener, MouseMotionListener {
+	
 	boolean leftDown;
 	boolean rightDown;
 	boolean upDown;
@@ -16,6 +28,15 @@ public class InputManager implements KeyListener {
 	boolean aDown;
 	boolean dDown;
 	boolean controlDown;
+	Point2D mousePosition;
+	long mouseDownTimeStart;
+	long mouseDownTime;
+	boolean mouseRightDown;
+	boolean mouseLeftDown;
+
+	public InputManager() {
+		
+	}
 
 	public int getHorizontalArrows(){
 		int h = 0;
@@ -43,6 +64,10 @@ public class InputManager implements KeyListener {
 		if (wDown) v--;
 		if (sDown) v++;
 		return v;
+	}
+	
+	public Point2D getMousePosition() {
+		return new Point2D(MouseInfo.getPointerInfo().getLocation().getX(), MouseInfo.getPointerInfo().getLocation().getY());
 	}
 
 	@Override
@@ -81,6 +106,56 @@ public class InputManager implements KeyListener {
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		mouseLeftDown = true;
+		mouseDownTimeStart = System.currentTimeMillis();
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		mouseLeftDown = false;
+		mouseDownTime = System.currentTimeMillis() - mouseDownTimeStart;
+		mouseDownTimeStart = 0;
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		mousePosition = new Point2D(e.getPoint().getX(), e.getPoint().getY());
+		
+	}
+
+	public long getMouseDownTime() {
+		return mouseDownTime;
+	}
+	
+	public boolean isMouseLeftDown(){
+		return mouseLeftDown;
 	}
 	
 }

@@ -10,8 +10,8 @@ public abstract class PhysicsManager {
 	public PhysicsManager(){
 		
 	}
-	
-	public abstract void move();
+
+	public abstract void move(long delta);
 	
 	/*
 	private boolean collision(GameObject a, GameObject b) {
