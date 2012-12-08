@@ -39,8 +39,8 @@ public class PoolPhysicsManager extends PhysicsManager {
 			
 			// FRICTION - Slow down velocity
 			Vector3D vel = new Vector3D(
-					ball.getVelocity().getX() * table.getCloth().getFriction() * (delta / multiplier), 
-					ball.getVelocity().getY() * table.getCloth().getFriction() * (delta / multiplier), 
+					ball.getVelocity().getX() * table.getCloth().getFriction(), 
+					ball.getVelocity().getY() * table.getCloth().getFriction(), 
 					0);
 			
 			if (vel.getVectorLength() < velocityLimit){
@@ -193,10 +193,10 @@ public class PoolPhysicsManager extends PhysicsManager {
 		double distanceX = Math.abs( ball.getPosition().getX() - bumper.getAnchor().getX() );
 		double distanceY = Math.abs( ball.getPosition().getY() - bumper.getAnchor().getY() );
 		
-		if (distanceX > bumper.getWidth() / 2 + ball.getRadius()){
+		if (distanceX > bumper.getWidth() / 2 + ball.getRadius() * Math.abs(bumper.getxDir())){
 			collision = false;
 		}
-		if (distanceY > bumper.getHeight() / 2 + ball.getRadius()){
+		if (distanceY > bumper.getHeight() / 2 + ball.getRadius() * Math.abs(bumper.getyDir())){
 			collision = false;
 		}
 		

@@ -20,32 +20,33 @@ public class PoolScene extends Scene {
 		double triangleX = -80;
 		double diameter = 5.4;
 		double offset = 0.95;
+		double depth = 0;
 		
-		cueBall = new PoolBall(0, diameter/2, new Point3D(100, 0, 0));
+		cueBall = new PoolBall(0, diameter/2, new Point3D(100, 0, depth));
 		
 		objects.add( cueBall );
 				
-		objects.add( new PoolBall(1, diameter/2, new Point3D(triangleX-diameter*offset, 0, 0)) );
+		objects.add( new PoolBall(1, diameter/2, new Point3D(triangleX-diameter*offset, 0, depth)) );
 		
-		objects.add( new PoolBall(2, diameter/2, new Point3D(triangleX-diameter*2*offset, diameter/2, 0)) );
-		objects.add( new PoolBall(3, diameter/2, new Point3D(triangleX-diameter*2*offset, -diameter/2, 0)) );
+		objects.add( new PoolBall(2, diameter/2, new Point3D(triangleX-diameter*2*offset, diameter/2, depth)) );
+		objects.add( new PoolBall(3, diameter/2, new Point3D(triangleX-diameter*2*offset, -diameter/2, depth)) );
 		
-		objects.add( new PoolBall(2, diameter/2, new Point3D(triangleX-diameter*3*offset, diameter, 0)) );
-		objects.add( new PoolBall(3, diameter/2, new Point3D(triangleX-diameter*3*offset, 0, 0)) );
-		objects.add( new PoolBall(2, diameter/2, new Point3D(triangleX-diameter*3*offset, -diameter, 0)) );
+		objects.add( new PoolBall(2, diameter/2, new Point3D(triangleX-diameter*3*offset, diameter, depth)) );
+		objects.add( new PoolBall(3, diameter/2, new Point3D(triangleX-diameter*3*offset, 0, depth)) );
+		objects.add( new PoolBall(2, diameter/2, new Point3D(triangleX-diameter*3*offset, -diameter, depth)) );
 		
-		objects.add( new PoolBall(2, diameter/2, new Point3D(triangleX-diameter*4*offset, diameter + diameter/2, 0)) );
-		objects.add( new PoolBall(3, diameter/2, new Point3D(triangleX-diameter*4*offset, diameter/2, 0)) );
-		objects.add( new PoolBall(2, diameter/2, new Point3D(triangleX-diameter*4*offset, -diameter/2, 0)) );
-		objects.add( new PoolBall(2, diameter/2, new Point3D(triangleX-diameter*4*offset, -(diameter + diameter/2), 0)) );
+		objects.add( new PoolBall(2, diameter/2, new Point3D(triangleX-diameter*4*offset, diameter + diameter/2, depth)) );
+		objects.add( new PoolBall(3, diameter/2, new Point3D(triangleX-diameter*4*offset, diameter/2, depth)) );
+		objects.add( new PoolBall(2, diameter/2, new Point3D(triangleX-diameter*4*offset, -diameter/2, depth)) );
+		objects.add( new PoolBall(2, diameter/2, new Point3D(triangleX-diameter*4*offset, -(diameter + diameter/2), depth)) );
 		
-		objects.add( new PoolBall(2, diameter/2, new Point3D(triangleX-diameter*5*offset, diameter*2, 0)) );
-		objects.add( new PoolBall(3, diameter/2, new Point3D(triangleX-diameter*5*offset, diameter, 0)) );
-		objects.add( new PoolBall(2, diameter/2, new Point3D(triangleX-diameter*5*offset, 0, 0)) );
-		objects.add( new PoolBall(2, diameter/2, new Point3D(triangleX-diameter*5*offset, -diameter, 0)) );
-		objects.add( new PoolBall(2, diameter/2, new Point3D(triangleX-diameter*5*offset, -diameter*2, 0)) );
+		objects.add( new PoolBall(2, diameter/2, new Point3D(triangleX-diameter*5*offset, diameter*2, depth)) );
+		objects.add( new PoolBall(3, diameter/2, new Point3D(triangleX-diameter*5*offset, diameter, depth)) );
+		objects.add( new PoolBall(2, diameter/2, new Point3D(triangleX-diameter*5*offset, 0, depth)) );
+		objects.add( new PoolBall(2, diameter/2, new Point3D(triangleX-diameter*5*offset, -diameter, depth)) );
+		objects.add( new PoolBall(2, diameter/2, new Point3D(triangleX-diameter*5*offset, -diameter*2, depth)) );
 		
-		PoolTable table = new PoolTable(new Point3D(0,0,-10), 140, 270, 10, 14, diameter*1.8, 0.982);
+		PoolTable table = new PoolTable(new Point3D(0,0,-diameter*1.5), 140, 270, 10, 20, diameter*1.8, 0.984);
 		objects.add(table);
 		
 		Light light = new Light(new Point3D(0,10000,0), 100, Color.white);

@@ -1,7 +1,5 @@
 package game.objects;
 
-import javax.xml.transform.sax.TransformerHandler;
-
 import engine.GameObject;
 import engine.TransformManager;
 import engine.math.Point3D;

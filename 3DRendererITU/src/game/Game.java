@@ -135,13 +135,7 @@ public class Game extends JPanel {
 		Vector3D rotated = TransformManager.rotateVector(camVector, 0, y * speed, z * speed);
 		rotated = look.add(rotated.toPoint()).toVector();
 		scene.getCamera().setPosition(rotated.toPoint());
-		
-
-		
-		
-		
-		
-		
+				
 		// Add force to ball
 		shoot();
 
@@ -167,10 +161,13 @@ public class Game extends JPanel {
 				scene.getCueBall().addVelocity( force );
 				
 				shooting = false;
-			}
+				
+			} else {
 	
-			// Move camera
-			scene.getCamera().setLookpoint( scene.getCueBall().getPosition() );
+				// Move camera
+				scene.getCamera().setLookpoint( scene.getCueBall().getPosition() );
+				
+			}
 			
 		}
 		
