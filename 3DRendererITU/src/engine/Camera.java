@@ -123,4 +123,8 @@ public class Camera {
 		lookPoint.setZ(p.getZ());
 	}
 
+	public void setPosition(Point3D p) {
+		this.position = p;
+	}
+
 }

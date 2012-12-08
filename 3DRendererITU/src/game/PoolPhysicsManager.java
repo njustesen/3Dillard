@@ -3,6 +3,7 @@ package game;
 import java.util.ArrayList;
 import engine.GameObject;
 import engine.Scene;
+import engine.math.Point3D;
 import engine.math.Vector2D;
 import engine.math.Vector3D;
 import engine.physics.PhysicsManager;
@@ -31,10 +32,15 @@ public class PoolPhysicsManager extends PhysicsManager {
 		// Move balls
 		for(PoolBall ball : balls){
 			
+			// Skip balls in pocket
+			if (ball.inPocket()){
+				continue;
+			}
+			
 			// FRICTION - Slow down velocity
 			Vector3D vel = new Vector3D(
-					ball.getVelocity().getX() * table.getFriction() * (delta / multiplier), 
-					ball.getVelocity().getY() * table.getFriction() * (delta / multiplier), 
+					ball.getVelocity().getX() * table.getCloth().getFriction() * (delta / multiplier), 
+					ball.getVelocity().getY() * table.getCloth().getFriction() * (delta / multiplier), 
 					0);
 			
 			if (vel.getVectorLength() < velocityLimit){
@@ -46,11 +52,23 @@ public class PoolPhysicsManager extends PhysicsManager {
 			// Move ball
 			ball.move(ball.getVelocity().multiply( (delta / multiplier) ));
 			
+			// In pocket
+			if (outOfBounds(ball)){
+				
+				ball.putInPocket();
+				
+			}
+			
 			// Test collision with bumpers
 			checkBumperCollisions(ball);
-			
+						
 			// Test collision with balls
 			for(int i = balls.indexOf(ball); i < balls.size(); i++){
+				
+				// Skip balls in pocket
+				if (balls.get(i).inPocket()){
+					continue;
+				}
 				
 				if (checkBallCollision(ball, balls.get(i))){
 					
@@ -59,8 +77,30 @@ public class PoolPhysicsManager extends PhysicsManager {
 				}
 				
 			}
-			
+						
 		}
+		
+	}
+
+	private boolean outOfBounds(PoolBall ball) {
+
+		if (ball.getPosition().getX() >= table.getCloth().getWidth() / 2){
+			return true;
+		}
+				
+		if (ball.getPosition().getX() <= -table.getCloth().getWidth() / 2){
+			return true;
+		}
+		
+		if (ball.getPosition().getY() >= table.getCloth().getHeight() / 2){
+			return true;
+		}
+		
+		if (ball.getPosition().getY() <= -table.getCloth().getHeight() / 2){
+			return true;
+		}
+		
+		return false;
 		
 	}
 
@@ -130,14 +170,18 @@ public class PoolPhysicsManager extends PhysicsManager {
 
 	private void checkBumperCollisions(PoolBall ball) {
 		
-		if (checkBumperCollision(table.getBumperTop(), ball)) 
-			bumperCollision(table.getBumperTop(), ball);
+		if (checkBumperCollision(table.getBumperTopA(), ball)) 
+			bumperCollision(table.getBumperTopA(), ball);
+		if (checkBumperCollision(table.getBumperTopB(), ball)) 
+			bumperCollision(table.getBumperTopB(), ball);
 		if (checkBumperCollision(table.getBumperRight(), ball))
 			bumperCollision(table.getBumperRight(), ball);
 		if (checkBumperCollision(table.getBumperLeft(), ball))
 			bumperCollision(table.getBumperLeft(), ball);
-		if (checkBumperCollision(table.getBumperBottom(), ball))
-			bumperCollision(table.getBumperBottom(), ball);
+		if (checkBumperCollision(table.getBumperBottomA(), ball))
+			bumperCollision(table.getBumperBottomA(), ball);
+		if (checkBumperCollision(table.getBumperBottomB(), ball))
+			bumperCollision(table.getBumperBottomB(), ball);
 		
 	}
 
@@ -166,20 +210,20 @@ public class PoolPhysicsManager extends PhysicsManager {
 		int y = 1;
 		
 		// If bumper is right or left
-		if (bumper.getAnchor().getX() != 0){
+		if (bumper.getxDir() != 0){
 			x = -1;
-			if (bumper.getAnchor().getX() > 0)
+			if (bumper.getxDir() > 0)
 				ball.getPosition().setX(bumper.getAnchor().getX() - (bumper.getWidth()/2 + ball.getRadius()));
-			if (bumper.getAnchor().getX() < 0)
+			if (bumper.getxDir() < 0)
 				ball.getPosition().setX(bumper.getAnchor().getX() + (bumper.getWidth()/2 + ball.getRadius()));
 		}
 		
 		// If bumper is right or left
-		if (bumper.getAnchor().getY() != 0){
+		if (bumper.getyDir() != 0){
 			y = -1;
-			if (bumper.getAnchor().getY() > 0)
+			if (bumper.getyDir() > 0)
 				ball.getPosition().setY(bumper.getAnchor().getY() - (bumper.getHeight()/2 + ball.getRadius()));
-			if (bumper.getAnchor().getY() < 0)
+			if (bumper.getyDir() < 0)
 				ball.getPosition().setY(bumper.getAnchor().getY() + (bumper.getHeight()/2 + ball.getRadius()));
 		}
 		

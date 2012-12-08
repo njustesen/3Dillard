@@ -45,7 +45,7 @@ public class PoolScene extends Scene {
 		objects.add( new PoolBall(2, diameter/2, new Point3D(triangleX-diameter*5*offset, -diameter, 0)) );
 		objects.add( new PoolBall(2, diameter/2, new Point3D(triangleX-diameter*5*offset, -diameter*2, 0)) );
 		
-		PoolTable table = new PoolTable(new Point3D(0,0,-10), 140, 270, 10, 14, 0.982);
+		PoolTable table = new PoolTable(new Point3D(0,0,-10), 140, 270, 10, 14, diameter*1.8, 0.982);
 		objects.add(table);
 		
 		Light light = new Light(new Point3D(0,10000,0), 100, Color.white);

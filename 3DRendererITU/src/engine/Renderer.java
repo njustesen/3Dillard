@@ -71,6 +71,11 @@ public class Renderer {
 		int newColor = 0;
 		
 		for(GameObject obj : scene.getObjects()){
+			
+			if (!obj.isVisible()){
+				continue;
+			}
+			
 			for(Shape3D shape: obj.getShapes()){
 				for(Triangle3D t: shape.getTriangles()){
 					

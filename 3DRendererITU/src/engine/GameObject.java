@@ -9,10 +9,12 @@ public abstract class GameObject {
 
 	protected ArrayList<Shape3D> shapes;
 	protected Point3D position;
+	protected boolean visible;
 	
 	public GameObject(Point3D position){
 		this.shapes = new ArrayList<Shape3D>();
 		this.position = position;
+		this.visible = true;
 	}
 	
 	public abstract void build();
@@ -35,6 +37,16 @@ public abstract class GameObject {
 
 	public void setPosition(Point3D position) {
 		this.position = position;
+	}
+
+	public boolean isVisible() {
+		return visible;
+	}
+	
+	public void setVisible (boolean visible){
+	
+		this.visible = visible;
+		
 	}
 	
 }

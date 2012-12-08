@@ -16,12 +16,14 @@ public class PoolBall extends GameObject implements MovableBall {
 	private int number;
 	private double radius;
 	private Vector3D velocity;
+	private boolean inPocket;
 	
 	public PoolBall(int number, double radius, Point3D position){
 		super(position);
 		this.number = number;
 		this.radius = radius;
 		this.velocity = Vector3D.Zero;
+		this.inPocket = false;
 		build();
 	}
 	
@@ -91,6 +93,15 @@ public class PoolBall extends GameObject implements MovableBall {
 		velocity.setX(velocity.getX() + amount.getX());
 		velocity.setY(velocity.getY() + amount.getY());
 		velocity.setZ(velocity.getZ() + amount.getZ());
+	}
+
+	public boolean inPocket() {
+		return inPocket;
+	}
+
+	public void putInPocket() {
+		inPocket = true;
+		visible = false;
 	}
 	
 }

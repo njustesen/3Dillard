@@ -5,48 +5,71 @@ import engine.math.Point3D;
 
 public class PoolTable extends GameObject {
 	
-	double width, height, depth, bumperWidth;
+	double width, height, depth, bumperWidth, pocketRadius;
 	double friction;
-	Bumper bumperTop;
+	Bumper bumperTopA;
+	Bumper bumperTopB;
 	Bumper bumperLeft;
 	Bumper bumperRight;
-	Bumper bumperBottom;
+	Bumper bumperBottomA;
+	Bumper bumperBottomB;
+	Cloth cloth;
 
-	public PoolTable(Point3D position, double height, double width, double depth, double bumpersWidth, double friction) {
+	public PoolTable(Point3D position, double height, double width, double depth, double bumpersWidth, double pocketRadius, double friction) {
 		super(position);
 		this.width = width; 
 		this.height = height;
 		this.depth = depth;
 		this.bumperWidth = bumpersWidth;
 		this.friction = friction;
+		this.pocketRadius = pocketRadius;
 		build();
 	}
 
 	@Override
 	public void build() {
 		
+		double pocketDiameter = pocketRadius * 2;
+		
 		// SURFACE
-		addShape(new Bumper(Point3D.Zero, height, width, depth));
+		cloth = new Cloth(Point3D.Zero, height, width, depth, friction);
+		addShape(cloth);
 		
-		// TOP
-		Bumper top = new Bumper(new Point3D(0, height/2 + bumperWidth/2, depth/2), bumperWidth, width, depth*2);
-		addShape(top);
-		setBumperTop(top);
+		// TOP A
+		bumperTopA = new Bumper(new Point3D(width / 4, height/2 + bumperWidth/2, depth/4), bumperWidth, width/2 - pocketDiameter, depth*1.5);
+		bumperTopA.setxDir(0);
+		bumperTopA.setyDir(1);
+		addShape(bumperTopA);
 		
-		// BOTTOM
-		Bumper bottom = new Bumper(new Point3D(0, -height/2 - bumperWidth/2, depth/2), bumperWidth, width, depth*2);
-		addShape(bottom);
-		setBumperBottom(bottom);
+		// TOP B
+		bumperTopB = new Bumper(new Point3D(-width / 4, height/2 + bumperWidth/2, depth/4), bumperWidth, width/2 - pocketDiameter, depth*1.5);
+		bumperTopB.setxDir(0);
+		bumperTopB.setyDir(1);
+		addShape(bumperTopB);
+		
+		// BOTTOM A
+		bumperBottomA = new Bumper(new Point3D(width / 4, -height/2 - bumperWidth/2, depth/4), bumperWidth, width/2 - pocketDiameter, depth*1.5);
+		bumperBottomA.setxDir(0);
+		bumperBottomA.setyDir(-1);
+		addShape(bumperBottomA);
+		
+		// BOTTOM B
+		bumperBottomB = new Bumper(new Point3D(-width / 4, -height/2 - bumperWidth/2, depth/4), bumperWidth, width/2 - pocketDiameter, depth*1.5);
+		bumperBottomB.setxDir(0);
+		bumperBottomB.setyDir(-1);
+		addShape(bumperBottomB);
 		
 		// LEFT
-		Bumper left = new Bumper(new Point3D(-width/2 - bumperWidth/2, 0, depth/2), height + bumperWidth *2, bumperWidth, depth*2);
-		addShape(left);
-		setBumperLeft(left);
+		bumperLeft = new Bumper(new Point3D(-width/2 - bumperWidth/2, 0, depth/4), height - pocketDiameter, bumperWidth, depth*1.5);
+		bumperLeft.setxDir(-1);
+		bumperLeft.setyDir(0);
+		addShape(bumperLeft);
 		
 		// RIGHT
-		Bumper right = new Bumper(new Point3D(width/2 + bumperWidth/2, 0, depth/2), height + bumperWidth *2, bumperWidth, depth*2);
-		addShape(right);
-		setBumperRight(right);
+		bumperRight = new Bumper(new Point3D(width/2 + bumperWidth/2, 0, depth/4), height - pocketDiameter, bumperWidth, depth*1.5);
+		bumperRight.setxDir(1);
+		bumperRight.setyDir(0);
+		addShape(bumperRight);
 		
 	}
 
@@ -90,12 +113,20 @@ public class PoolTable extends GameObject {
 		this.friction = friction;
 	}
 
-	public Bumper getBumperTop() {
-		return bumperTop;
+	public Bumper getBumperTopA() {
+		return bumperTopA;
 	}
 
-	public void setBumperTop(Bumper bumperTop) {
-		this.bumperTop = bumperTop;
+	public void setBumperTopA(Bumper bumperTop) {
+		this.bumperTopA = bumperTop;
+	}
+	
+	public Bumper getBumperTopB() {
+		return bumperTopB;
+	}
+
+	public void setBumperTopB(Bumper bumperTop) {
+		this.bumperTopB = bumperTop;
 	}
 
 	public Bumper getBumperLeft() {
@@ -114,12 +145,24 @@ public class PoolTable extends GameObject {
 		this.bumperRight = bumperRight;
 	}
 
-	public Bumper getBumperBottom() {
-		return bumperBottom;
+	public Bumper getBumperBottomA() {
+		return bumperBottomA;
 	}
 
-	public void setBumperBottom(Bumper bumperBottom) {
-		this.bumperBottom = bumperBottom;
+	public void setBumperBottomA(Bumper bumperBottom) {
+		this.bumperBottomA = bumperBottom;
+	}
+	
+	public Bumper getBumperBottomB() {
+		return bumperBottomB;
+	}
+
+	public void setBumperBottomB(Bumper bumperBottom) {
+		this.bumperBottomB = bumperBottom;
+	}
+
+	public Cloth getCloth() {
+		return cloth;
 	}
 	
 }
