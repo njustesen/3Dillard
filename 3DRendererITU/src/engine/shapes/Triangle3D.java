@@ -70,14 +70,15 @@ public class Triangle3D implements Comparable<Triangle3D>{
 		
 		double thisZMin = Math.min(this.getPointC().getZ(), 
 				Math.min(this.getPointA().getZ(), this.getPointB().getZ()));
-		double thisZMax = Math.max(this.getPointC().getZ(), 
-				Math.max(this.getPointA().getZ(), this.getPointB().getZ()));
-		double thisCenterZ = this.getCenter().getZ();
+		
+		//double thisZMax = Math.max(this.getPointC().getZ(), 
+		//		Math.max(this.getPointA().getZ(), this.getPointB().getZ()));
+		//double thisCenterZ = this.getCenter().getZ();
 		double otherZMin = Math.min(this.getPointC().getZ(), 
 				Math.min(t.getPointA().getZ(), t.getPointB().getZ()));
-		double otherZMax = Math.max(this.getPointC().getZ(), 
-				Math.max(t.getPointA().getZ(), t.getPointB().getZ()));
-		double otherCenterZ = t.getCenter().getZ();
+		//double otherZMax = Math.max(this.getPointC().getZ(), 
+		//		Math.max(t.getPointA().getZ(), t.getPointB().getZ()));
+		//double otherCenterZ = t.getCenter().getZ();
 		
 		if(thisZMin > otherZMin){
 			return 1;

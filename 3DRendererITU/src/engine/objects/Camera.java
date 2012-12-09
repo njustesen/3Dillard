@@ -1,4 +1,4 @@
-package engine;
+package engine.objects;
 
 import engine.math.Point3D;
 import engine.math.Vector3D;

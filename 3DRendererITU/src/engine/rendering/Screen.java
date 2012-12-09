@@ -1,4 +1,4 @@
-package engine;
+package engine.rendering;
 
 import engine.math.Point2D;
 

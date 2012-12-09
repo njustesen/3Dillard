@@ -1,6 +1,5 @@
 package engine.objects;
 
-import engine.GameObject;
 import engine.TransformManager;
 import engine.math.Point3D;
 import engine.math.Vector3D;
@@ -83,7 +82,7 @@ public class BilliardBall extends GameObject implements Movable {
 			y = 0;
 		}
 		
-		TransformManager.rotateObject(this, x, y, 0);
+		TransformManager.rotateObject(this, x, y, z);
 	}
 
 	@Override

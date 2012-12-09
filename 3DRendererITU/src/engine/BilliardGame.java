@@ -2,41 +2,32 @@ package engine;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Polygon;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import engine.Render;
-import engine.Scene;
-import engine.Screen;
-import engine.TransformManager;
 import engine.input.InputManager;
-import engine.math.Point3D;
-import engine.math.Vector3D;
 import engine.objects.Light;
-import engine.objects.BilliardBall;
-import engine.objects.BilliardCamera;
-import engine.physics.Movable;
 import engine.physics.BillardPhysicsManager;
+import engine.rendering.Renderer;
+import engine.rendering.WireframeRenderer;
+import engine.rendering.Scene;
+import engine.rendering.Screen;
 import engine.shapes.Triangle2D;
 import engine.shapes.Triangle3D;
-
 
 @SuppressWarnings("serial")
 public abstract class BilliardGame extends JPanel {
 	
-	private int FPS = 24;
-	private int screenWidth = 1200;
-	private int screenHeight = 700;
+	protected int FPS = 24;
+	protected int screenWidth = 1200;
+	protected int screenHeight = 700;
 	
-	private InputManager inputManager; 
-	private BillardPhysicsManager physicsManager; 
-	private Screen screen;
-	private Scene scene;
-	private Render render;
+	protected InputManager inputManager; 
+	protected BillardPhysicsManager physicsManager; 
+	protected Screen screen;
+	protected Scene scene;
+	protected Renderer renderer;
 	
 	/**
 	 * Constructor for Game.
@@ -45,7 +36,7 @@ public abstract class BilliardGame extends JPanel {
 		
 		screen = new Screen(screenWidth, screenHeight);
 		
-		render = new Render();
+		renderer = new WireframeRenderer();
 		
 		inputManager = new InputManager();
 		physicsManager = new BillardPhysicsManager(56); 
@@ -99,9 +90,9 @@ public abstract class BilliardGame extends JPanel {
 	/**
 	 * Draws the game.
 	 */
-	protected void draw() {
+	private void draw() {
 		
-		render.render(scene, screen);
+		renderer.render(scene, screen);
 		
 		repaint();
 		
@@ -113,12 +104,12 @@ public abstract class BilliardGame extends JPanel {
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
 
-		for(Triangle2D t : render.getRenderedTriangles()){
+		for(Triangle2D t : renderer.getRenderedTriangles()){
 			int[]x = new int[3];
 			int[]y = new int[3];
 			x[0] = (int) t.getA().getX(); x[1] = (int) t.getB().getX(); x[2] = (int) t.getC().getX();			
 			y[0] = (int) t.getA().getY(); y[1] = (int) t.getB().getY(); y[2] = (int) t.getC().getY();
-			Polygon p = new Polygon(x, y, 3);
+			//Polygon p = new Polygon(x, y, 3);
 			
 			g.setColor(t.getColor());
 			//System.out.println("t2d's color = "+t.getColor());
@@ -144,6 +135,62 @@ public abstract class BilliardGame extends JPanel {
 			BnW += (int) t.getSurfaceNormal().getDotProduct(l.getPosition().toVector());
 		}
 		return new Color(BnW, BnW, BnW);
+	}
+
+	public int getFPS() {
+		return FPS;
+	}
+
+	public void setFPS(int fPS) {
+		FPS = fPS;
+	}
+
+	public int getScreenWidth() {
+		return screenWidth;
+	}
+
+	public void setScreenWidth(int screenWidth) {
+		this.screenWidth = screenWidth;
+	}
+
+	public int getScreenHeight() {
+		return screenHeight;
+	}
+
+	public void setScreenHeight(int screenHeight) {
+		this.screenHeight = screenHeight;
+	}
+
+	public BillardPhysicsManager getPhysicsManager() {
+		return physicsManager;
+	}
+
+	public void setPhysicsManager(BillardPhysicsManager physicsManager) {
+		this.physicsManager = physicsManager;
+	}
+
+	public Screen getScreen() {
+		return screen;
+	}
+
+	public void setScreen(Screen screen) {
+		this.screen = screen;
+	}
+
+	public Scene getScene() {
+		return scene;
+	}
+
+	public void setScene(Scene scene) {
+		this.scene = scene;
+	}
+
+	public Renderer getRenderer() {
+		return renderer;
+	}
+
+	public void setRender(Renderer renderer) {
+		this.renderer = renderer;
 	}
 	
 }

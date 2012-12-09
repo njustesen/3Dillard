@@ -5,14 +5,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
-import engine.Camera;
-import engine.Screen;
-import engine.TransformManager;
 import engine.math.Point2D;
-import engine.math.Point3D;
-import engine.math.Vector2D;
-import engine.math.Vector3D;
 
 
 public class InputManager implements KeyListener, MouseListener, MouseMotionListener {

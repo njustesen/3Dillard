@@ -1,8 +1,6 @@
 package engine.objects;
 
 import java.awt.Color;
-
-import engine.GameObject;
 import engine.math.Point3D;
 
 public class Light{

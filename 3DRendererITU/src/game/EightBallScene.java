@@ -1,15 +1,15 @@
 package game;
 
 import java.awt.Color;
-import engine.Scene;
 import engine.math.Point3D;
 import engine.math.Vector3D;
 import engine.objects.Light;
 import engine.objects.BilliardBall;
 import engine.objects.BilliardCamera;
 import engine.objects.BilliardTable;
+import engine.rendering.Scene;
 
-public class PoolScene extends Scene {
+public class EightBallScene extends Scene {
 	
 	BilliardBall cueBall;
 

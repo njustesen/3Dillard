@@ -1,13 +1,13 @@
 package engine.physics;
 
 import java.util.ArrayList;
-import engine.GameObject;
-import engine.Scene;
 import engine.math.Vector2D;
 import engine.math.Vector3D;
 import engine.objects.Bumper;
 import engine.objects.BilliardBall;
 import engine.objects.BilliardTable;
+import engine.objects.GameObject;
+import engine.rendering.Scene;
 
 public class BillardPhysicsManager extends PhysicsManager {
 

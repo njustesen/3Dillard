@@ -1,6 +1,5 @@
 package engine.objects;
 
-import engine.GameObject;
 import engine.math.Point3D;
 
 public class BilliardTable extends GameObject {

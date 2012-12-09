@@ -1,6 +1,5 @@
 package engine.objects;
 
-import engine.Camera;
 import engine.math.Point3D;
 import engine.math.Vector3D;
 
