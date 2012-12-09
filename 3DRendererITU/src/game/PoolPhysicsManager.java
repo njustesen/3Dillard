@@ -13,22 +13,39 @@ import game.objects.PoolTable;
 
 public class PoolPhysicsManager extends PhysicsManager {
 
-	private static final double velocityLimit = 0.065;
-	private int multiplier;
+	private static final double velocityLimit = 0.01;	// 1 cm/sec
 	private ArrayList<PoolBall> balls;
 	private PoolTable table;
+	private int iterationsPerSecond;
 	
-	public PoolPhysicsManager(int multiplier){
+	public PoolPhysicsManager(int iterationsPerSecond){
 		
 		balls = new ArrayList<PoolBall>();
-		
-		this.multiplier = multiplier;
+		this.iterationsPerSecond = iterationsPerSecond;
 		
 	}
 
 	@Override
 	public void move(long delta) {
 		
+		int iterations = Math.max(1, (int) (delta/1000.0 * iterationsPerSecond) );
+		double iterationTime = delta/iterations;
+		
+		for(int i = 0; i < iterations; i++){
+			
+			//long nano = System.nanoTime();
+			moveBalls(iterationTime);
+			//nano = System.nanoTime() - nano;
+			//double ms = nano / 1000000.0;
+			//System.out.println(ms);
+			
+		}
+		
+	}
+
+	public void moveBalls(double ms){
+		
+
 		// Move balls
 		for(PoolBall ball : balls){
 			
@@ -37,20 +54,25 @@ public class PoolPhysicsManager extends PhysicsManager {
 				continue;
 			}
 			
-			// FRICTION - Slow down velocity
-			Vector3D vel = new Vector3D(
-					ball.getVelocity().getX() * table.getCloth().getFriction(), 
-					ball.getVelocity().getY() * table.getCloth().getFriction(), 
-					0);
-			
-			if (vel.getVectorLength() < velocityLimit){
-				vel = new Vector3D(0, 0, 0);
+			// Friction
+			double speed = ball.getVelocity().getVectorLength();
+			double deacceleration = table.getCloth().getDeaccelerationCoefficient() * speed;
+			if (deacceleration >= speed){
+				speed = 0;
+			} else {
+				speed -= deacceleration;
 			}
 			
-			ball.setVelocity(vel);
+			if (speed < velocityLimit && speed != 0){
+				speed = 0;
+			}
 			
-			// Move ball
-			ball.move(ball.getVelocity().multiply( (delta / multiplier) ));
+			Vector3D unit = ball.getVelocity().getUnitVector();
+			ball.setVelocity( unit.multiply(speed) );
+
+			
+			// Move ball - in cm/s
+			ball.move(ball.getVelocity().multiply( ms/1000.0 * 100 ));
 			
 			// In pocket
 			if (outOfBounds(ball)){
@@ -81,7 +103,7 @@ public class PoolPhysicsManager extends PhysicsManager {
 		}
 		
 	}
-
+	
 	private boolean outOfBounds(PoolBall ball) {
 
 		if (ball.getPosition().getX() >= table.getCloth().getWidth() / 2){

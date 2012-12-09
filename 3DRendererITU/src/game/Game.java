@@ -51,7 +51,7 @@ public class Game extends JPanel {
 		renderer = new Renderer();
 		
 		inputManager = new InputManager();
-		physicsManager = new PoolPhysicsManager(30);
+		physicsManager = new PoolPhysicsManager(56);
 		
 		physicsManager.setupFromScene(scene);
 

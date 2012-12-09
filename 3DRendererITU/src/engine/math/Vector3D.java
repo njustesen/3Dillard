@@ -110,7 +110,11 @@ public class Vector3D {
 	 * returns a vector with a length of 1 unit.
 	 **/
 	public Vector3D getUnitVector(){
-		Vector3D newVector = new Vector3D(x/getVectorLength(), y/getVectorLength(), z/getVectorLength());
+		double length = getVectorLength();
+		if (length == 0){
+			return new Vector3D(0,0,0);
+		}
+		Vector3D newVector = new Vector3D(x/length, y/length, z/length);
 		return newVector;
 	}
 	

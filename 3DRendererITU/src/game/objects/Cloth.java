@@ -6,16 +6,21 @@ import engine.shapes.Cube;
 public class Cloth extends Cube  {
 	
 	double friction;
+	double deacceleration;
 	
-	public Cloth(Point3D anchor, double height, double width, double depth, double friction) {
+	public Cloth(Point3D anchor, double height, double width, double depth, double deacceleration) {
 		super(anchor, height, width, depth);
 		
-		this.friction = friction;
+		this.deacceleration = deacceleration;
 		
 	}
 
 	public double getFriction() {
 		return friction;
+	}
+
+	public double getDeaccelerationCoefficient() {
+		return deacceleration;
 	}
 	
 
