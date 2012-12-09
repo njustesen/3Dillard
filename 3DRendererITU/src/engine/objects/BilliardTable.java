@@ -26,7 +26,7 @@ public class BilliardTable extends GameObject {
 	}
 
 	@Override
-	public void build() {
+	protected void build() {
 		
 		double pocketDiameter = pocketRadius * 2;
 		

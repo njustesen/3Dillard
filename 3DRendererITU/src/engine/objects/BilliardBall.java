@@ -25,7 +25,7 @@ public class BilliardBall extends GameObject implements Movable {
 	}
 	
 	@Override
-	public void build() {
+	protected void build() {
 		
 		addShape(new Sphere(Point3D.Zero, radius, gradient));
 		

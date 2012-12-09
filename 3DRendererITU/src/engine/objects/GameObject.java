@@ -17,7 +17,7 @@ public abstract class GameObject {
 		this.visible = true;
 	}
 	
-	public abstract void build();
+	protected abstract void build();
 
 	public ArrayList<Shape3D> getShapes() {
 		return shapes;
