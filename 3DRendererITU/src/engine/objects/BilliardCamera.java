@@ -1,12 +1,12 @@
-package game.objects;
+package engine.objects;
 
 import engine.Camera;
 import engine.math.Point3D;
 import engine.math.Vector3D;
 
-public class PoolCamera extends Camera{
+public class BilliardCamera extends Camera{
 
-	public PoolCamera(Point3D position, Point3D lookPoint, Vector3D up, int angle) {
+	public BilliardCamera(Point3D position, Point3D lookPoint, Vector3D up, int angle) {
 		super(position, lookPoint, up, angle);
 		
 	}

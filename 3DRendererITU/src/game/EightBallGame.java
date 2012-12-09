@@ -9,49 +9,50 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import engine.Renderer;
+import engine.Render;
 import engine.Scene;
 import engine.Screen;
 import engine.TransformManager;
 import engine.input.InputManager;
 import engine.math.Point3D;
 import engine.math.Vector3D;
-import engine.physics.MovableBall;
+import engine.objects.Light;
+import engine.objects.BilliardBall;
+import engine.objects.BilliardCamera;
+import engine.physics.Movable;
+import engine.physics.BillardPhysicsManager;
 import engine.shapes.Triangle2D;
 import engine.shapes.Triangle3D;
-import game.objects.Light;
-import game.objects.PoolBall;
-import game.objects.PoolCamera;
 
 
 @SuppressWarnings("serial")
-public class Game extends JPanel {
+public class EightBallGame extends JPanel {
 	
 	private static final int FPS = 24;
 	private static final int screenWidth = 1200;
 	private static final int screenHeight = 700;
 	
 	private InputManager inputManager; 
-	private PoolPhysicsManager physicsManager; 
+	private BillardPhysicsManager physicsManager; 
 	private Screen screen;
 	private PoolScene scene;
-	private Renderer renderer;
+	private Render renderer;
 	
 	private boolean shooting;
 	
 	/**
 	 * Constructor for Game.
 	 */
-	public Game(){
+	public EightBallGame(){
 		
 		scene = new PoolScene();
 		
 		screen = new Screen(screenWidth, screenHeight);
 		
-		renderer = new Renderer();
+		renderer = new Render();
 		
 		inputManager = new InputManager();
-		physicsManager = new PoolPhysicsManager(56);
+		physicsManager = new BillardPhysicsManager(56);
 		
 		physicsManager.setupFromScene(scene);
 
@@ -154,7 +155,7 @@ public class Game extends JPanel {
 		
 			if (shooting && inputManager.getMouseDownTime() > 0){
 						
-				Vector3D force = ((PoolCamera) scene.getCamera()).getShootingDirection();
+				Vector3D force = ((BilliardCamera) scene.getCamera()).getShootingDirection();
 				double power = Math.min(16, inputManager.getMouseDownTime() / 100);
 				force = force.multiply(power);
 						

@@ -1,26 +1,24 @@
-package game;
+package engine.physics;
 
 import java.util.ArrayList;
 import engine.GameObject;
 import engine.Scene;
-import engine.math.Point3D;
 import engine.math.Vector2D;
 import engine.math.Vector3D;
-import engine.physics.PhysicsManager;
-import game.objects.Bumper;
-import game.objects.PoolBall;
-import game.objects.PoolTable;
+import engine.objects.Bumper;
+import engine.objects.BilliardBall;
+import engine.objects.BilliardTable;
 
-public class PoolPhysicsManager extends PhysicsManager {
+public class BillardPhysicsManager extends PhysicsManager {
 
 	private static final double velocityLimit = 0.01;	// 1 cm/sec
-	private ArrayList<PoolBall> balls;
-	private PoolTable table;
+	private ArrayList<BilliardBall> balls;
+	private BilliardTable table;
 	private int iterationsPerSecond;
 	
-	public PoolPhysicsManager(int iterationsPerSecond){
+	public BillardPhysicsManager(int iterationsPerSecond){
 		
-		balls = new ArrayList<PoolBall>();
+		balls = new ArrayList<BilliardBall>();
 		this.iterationsPerSecond = iterationsPerSecond;
 		
 	}
@@ -47,7 +45,7 @@ public class PoolPhysicsManager extends PhysicsManager {
 		
 
 		// Move balls
-		for(PoolBall ball : balls){
+		for(BilliardBall ball : balls){
 			
 			// Skip balls in pocket
 			if (ball.inPocket()){
@@ -104,7 +102,7 @@ public class PoolPhysicsManager extends PhysicsManager {
 		
 	}
 	
-	private boolean outOfBounds(PoolBall ball) {
+	private boolean outOfBounds(BilliardBall ball) {
 
 		if (ball.getPosition().getX() >= table.getCloth().getWidth() / 2){
 			return true;
@@ -126,7 +124,7 @@ public class PoolPhysicsManager extends PhysicsManager {
 		
 	}
 
-	private boolean checkBallCollision(PoolBall ball, PoolBall other) {
+	private boolean checkBallCollision(BilliardBall ball, BilliardBall other) {
 		
 		if (ball == other) return false;
 		
@@ -137,7 +135,7 @@ public class PoolPhysicsManager extends PhysicsManager {
 		return false;
 	}
 	
-	private void ballCollision(PoolBall a, PoolBall b) {
+	private void ballCollision(BilliardBall a, BilliardBall b) {
 		
 		// Correct positions
 		Vector3D vectorBetween3D = a.getPosition().subtract( b.getPosition() ).toVector();
@@ -162,7 +160,7 @@ public class PoolPhysicsManager extends PhysicsManager {
 		
 	}
 		
-	private Vector3D getTransferedForce(PoolBall a, PoolBall b) {
+	private Vector3D getTransferedForce(BilliardBall a, BilliardBall b) {
 		
 		Vector3D vectorBetween3D = a.getPosition().subtract( b.getPosition() ).toVector();
 		Vector3D unitBetween3D = vectorBetween3D.getUnitVector();
@@ -190,7 +188,7 @@ public class PoolPhysicsManager extends PhysicsManager {
 		
 	}
 
-	private void checkBumperCollisions(PoolBall ball) {
+	private void checkBumperCollisions(BilliardBall ball) {
 		
 		if (checkBumperCollision(table.getBumperTopA(), ball)) 
 			bumperCollision(table.getBumperTopA(), ball);
@@ -207,7 +205,7 @@ public class PoolPhysicsManager extends PhysicsManager {
 		
 	}
 
-	private boolean checkBumperCollision(Bumper bumper, PoolBall ball) {
+	private boolean checkBumperCollision(Bumper bumper, BilliardBall ball) {
 		
 		boolean collision = true;
 
@@ -226,7 +224,7 @@ public class PoolPhysicsManager extends PhysicsManager {
 		
 	}
 	
-	private void bumperCollision(Bumper bumper, PoolBall ball) {
+	private void bumperCollision(Bumper bumper, BilliardBall ball) {
 		
 		int x = 1;
 		int y = 1;
@@ -257,24 +255,24 @@ public class PoolPhysicsManager extends PhysicsManager {
 		
 	}
 
-	public ArrayList<PoolBall> getBalls() {
+	public ArrayList<BilliardBall> getBalls() {
 		return balls;
 	}
 
-	public void setBalls(ArrayList<PoolBall> balls) {
+	public void setBalls(ArrayList<BilliardBall> balls) {
 		this.balls = balls;
 	}
 	
-	public void addBall(PoolBall ball){
+	public void addBall(BilliardBall ball){
 		this.balls.add(ball);
 		
 	}
 
-	public PoolTable getTable() {
+	public BilliardTable getTable() {
 		return table;
 	}
 
-	public void setTable(PoolTable table) {
+	public void setTable(BilliardTable table) {
 		this.table = table;
 	}
 
@@ -282,13 +280,13 @@ public class PoolPhysicsManager extends PhysicsManager {
 		
 		for(GameObject obj : scene.getObjects()){
 			
-			if (obj instanceof PoolBall){
+			if (obj instanceof BilliardBall){
 				
-				addBall((PoolBall)obj);
+				addBall((BilliardBall)obj);
 				
-			} else if (obj instanceof PoolTable){
+			} else if (obj instanceof BilliardTable){
 				
-				setTable((PoolTable)obj);
+				setTable((BilliardTable)obj);
 				
 			}
 		}

@@ -1,4 +1,4 @@
-package game.objects;
+package engine.objects;
 
 import engine.math.Point3D;
 import engine.shapes.Cube;

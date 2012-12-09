@@ -1,6 +1,6 @@
 package engine;
 
-import game.objects.Light;
+import engine.objects.Light;
 
 import java.util.ArrayList;
 

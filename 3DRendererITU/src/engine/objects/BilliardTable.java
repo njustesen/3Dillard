@@ -1,9 +1,9 @@
-package game.objects;
+package engine.objects;
 
 import engine.GameObject;
 import engine.math.Point3D;
 
-public class PoolTable extends GameObject {
+public class BilliardTable extends GameObject {
 	
 	double width, height, depth, bumperWidth, pocketRadius;
 	double friction;
@@ -15,7 +15,7 @@ public class PoolTable extends GameObject {
 	Bumper bumperBottomB;
 	Cloth cloth;
 
-	public PoolTable(Point3D position, double height, double width, double depth, double bumpersWidth, double pocketRadius, double friction) {
+	public BilliardTable(Point3D position, double height, double width, double depth, double bumpersWidth, double pocketRadius, double friction) {
 		super(position);
 		this.width = width; 
 		this.height = height;

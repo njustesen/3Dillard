@@ -6,7 +6,7 @@ import engine.math.Vector3D;
 
 
 
-public class Triangle3D implements Comparable{
+public class Triangle3D implements Comparable<Triangle3D>{
 
 	private Point3D a, b, c;
 	private Point3D centerPoint;
@@ -66,7 +66,7 @@ public class Triangle3D implements Comparable{
 */
 
 	@Override
-	public int compareTo(Object o) {
+	public int compareTo(Triangle3D t) {
 		
 		double thisZMin = Math.min(this.getPointC().getZ(), 
 				Math.min(this.getPointA().getZ(), this.getPointB().getZ()));
@@ -74,10 +74,10 @@ public class Triangle3D implements Comparable{
 				Math.max(this.getPointA().getZ(), this.getPointB().getZ()));
 		double thisCenterZ = this.getCenter().getZ();
 		double otherZMin = Math.min(this.getPointC().getZ(), 
-				Math.min(((Triangle3D) o).getPointA().getZ(), ((Triangle3D) o).getPointB().getZ()));
+				Math.min(t.getPointA().getZ(), t.getPointB().getZ()));
 		double otherZMax = Math.max(this.getPointC().getZ(), 
-				Math.max(((Triangle3D) o).getPointA().getZ(), ((Triangle3D) o).getPointB().getZ()));
-		double otherCenterZ = ((Triangle3D) o).getCenter().getZ();
+				Math.max(t.getPointA().getZ(), t.getPointB().getZ()));
+		double otherCenterZ = t.getCenter().getZ();
 		
 		if(thisZMin > otherZMin){
 			return 1;

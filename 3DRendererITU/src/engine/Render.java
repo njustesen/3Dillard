@@ -9,18 +9,18 @@ import engine.math.Matrix;
 import engine.math.Point2D;
 import engine.math.Point3D;
 import engine.math.Vector3D;
+import engine.objects.Light;
 import engine.shapes.Shape3D;
 import engine.shapes.Triangle2D;
 import engine.shapes.Triangle3D;
-import game.objects.Light;
 
 
-public class Renderer {
+public class Render {
 	
 	private ArrayList<Triangle2D> lastRendering;
 	private PriorityQueue<Triangle3D> pq;
 	
-	public Renderer(){
+	public Render(){
 		
 	//	lastRendering = new ArrayList<Triangle2D>();
 		pq = new PriorityQueue<Triangle3D>();

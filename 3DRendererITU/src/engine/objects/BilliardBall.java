@@ -1,13 +1,13 @@
-package game.objects;
+package engine.objects;
 
 import engine.GameObject;
 import engine.TransformManager;
 import engine.math.Point3D;
 import engine.math.Vector3D;
-import engine.physics.MovableBall;
+import engine.physics.Movable;
 import engine.shapes.Sphere;
 
-public class PoolBall extends GameObject implements MovableBall {
+public class BilliardBall extends GameObject implements Movable {
 
 	private static final int gradient = 10;
 	
@@ -16,7 +16,7 @@ public class PoolBall extends GameObject implements MovableBall {
 	private Vector3D velocity;
 	private boolean inPocket;
 	
-	public PoolBall(int number, double radius, Point3D position){
+	public BilliardBall(int number, double radius, Point3D position){
 		super(position);
 		this.number = number;
 		this.radius = radius;

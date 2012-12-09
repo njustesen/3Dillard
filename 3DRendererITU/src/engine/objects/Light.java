@@ -1,4 +1,4 @@
-package game.objects;
+package engine.objects;
 
 import java.awt.Color;
 

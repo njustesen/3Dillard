@@ -1,4 +1,4 @@
-import game.Game;
+import game.EightBallGame;
 
 
 
@@ -9,7 +9,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
-		Game game = new Game();
+		EightBallGame game = new EightBallGame();
 		game.run();
 
 	}

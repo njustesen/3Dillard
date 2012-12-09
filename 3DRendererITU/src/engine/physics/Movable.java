@@ -3,7 +3,7 @@ package engine.physics;
 import engine.math.Point3D;
 import engine.math.Vector3D;
 
-public interface MovableBall {
+public interface Movable {
 
 	public Vector3D getVelocity();
 
