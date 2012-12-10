@@ -36,12 +36,13 @@ public class BillardPhysicsManager {
 			//double ms = nano / 1000000.0;
 			//System.out.println(ms);
 			
+			checkCollisions();
+			
 		}
 		
 	}
 
 	public void moveBalls(double ms){
-		
 
 		// Move balls
 		for(BilliardBall ball : balls){
@@ -71,15 +72,23 @@ public class BillardPhysicsManager {
 			// Move ball - in cm/s
 			ball.move(ball.getVelocity().multiply( ms/1000.0 * 100 ));
 			
-			// In pocket
+		}
+		
+	}
+	
+	private void checkCollisions() {
+		
+		// In pocket
+		for(BilliardBall ball : balls){
+					
+			// Test collision with rails
+			checkRailCollisions(ball);
+			
 			if (outOfBounds(ball)){
 				
 				ball.putInPocket();
-				
+					
 			}
-			
-			// Test collision with bumpers
-			checkRailCollisions(ball);
 						
 			// Test collision with balls
 			for(int i = balls.indexOf(ball); i < balls.size(); i++){
@@ -96,11 +105,11 @@ public class BillardPhysicsManager {
 				}
 				
 			}
-						
+			
 		}
 		
 	}
-	
+
 	private boolean outOfBounds(BilliardBall ball) {
 
 		if (ball.getPosition().getX() >= table.getCloth().getWidth() / 2){
@@ -190,32 +199,32 @@ public class BillardPhysicsManager {
 	private void checkRailCollisions(BilliardBall ball) {
 		
 		if (checkRailCollision(table.getRailTopA(), ball)) 
-			bumperCollision(table.getRailTopA(), ball);
+			railsCollision(table.getRailTopA(), ball);
 		if (checkRailCollision(table.getRailTopB(), ball)) 
-			bumperCollision(table.getRailTopB(), ball);
+			railsCollision(table.getRailTopB(), ball);
 		if (checkRailCollision(table.getRailRight(), ball))
-			bumperCollision(table.getRailRight(), ball);
+			railsCollision(table.getRailRight(), ball);
 		if (checkRailCollision(table.getRailLeft(), ball))
-			bumperCollision(table.getRailLeft(), ball);
+			railsCollision(table.getRailLeft(), ball);
 		if (checkRailCollision(table.getRailBottomA(), ball))
-			bumperCollision(table.getRailBottomA(), ball);
+			railsCollision(table.getRailBottomA(), ball);
 		if (checkRailCollision(table.getRailBottomB(), ball))
-			bumperCollision(table.getRailBottomB(), ball);
+			railsCollision(table.getRailBottomB(), ball);
 		
 	}
 
-	private boolean checkRailCollision(Rail bumper, BilliardBall ball) {
+	private boolean checkRailCollision(Rail rail, BilliardBall ball) {
 		
 		boolean collision = true;
 
 		// Test
-		double distanceX = Math.abs( ball.getPosition().getX() - bumper.getAnchor().getX() );
-		double distanceY = Math.abs( ball.getPosition().getY() - bumper.getAnchor().getY() );
+		double distanceX = Math.abs( ball.getPosition().getX() - rail.getAnchor().getX() );
+		double distanceY = Math.abs( ball.getPosition().getY() - rail.getAnchor().getY() );
 		
-		if (distanceX > bumper.getWidth() / 2 + ball.getRadius() * Math.abs(bumper.getxDir())){
+		if (distanceX > rail.getWidth() / 2 + ball.getRadius() * Math.abs(rail.getxDir())){
 			collision = false;
 		}
-		if (distanceY > bumper.getHeight() / 2 + ball.getRadius() * Math.abs(bumper.getyDir())){
+		if (distanceY > rail.getHeight() / 2 + ball.getRadius() * Math.abs(rail.getyDir())){
 			collision = false;
 		}
 		
@@ -223,27 +232,27 @@ public class BillardPhysicsManager {
 		
 	}
 	
-	private void bumperCollision(Rail bumper, BilliardBall ball) {
+	private void railsCollision(Rail rail, BilliardBall ball) {
 		
 		int x = 1;
 		int y = 1;
 		
-		// If bumper is right or left
-		if (bumper.getxDir() != 0){
+		// If rail is right or left
+		if (rail.getxDir() != 0){
 			x = -1;
-			if (bumper.getxDir() > 0)
-				ball.getPosition().setX(bumper.getAnchor().getX() - (bumper.getWidth()/2 + ball.getRadius()));
-			if (bumper.getxDir() < 0)
-				ball.getPosition().setX(bumper.getAnchor().getX() + (bumper.getWidth()/2 + ball.getRadius()));
+			if (rail.getxDir() > 0)
+				ball.getPosition().setX(rail.getAnchor().getX() - (rail.getWidth()/2 + ball.getRadius()));
+			if (rail.getxDir() < 0)
+				ball.getPosition().setX(rail.getAnchor().getX() + (rail.getWidth()/2 + ball.getRadius()));
 		}
 		
-		// If bumper is right or left
-		if (bumper.getyDir() != 0){
+		// If rail is right or left
+		if (rail.getyDir() != 0){
 			y = -1;
-			if (bumper.getyDir() > 0)
-				ball.getPosition().setY(bumper.getAnchor().getY() - (bumper.getHeight()/2 + ball.getRadius()));
-			if (bumper.getyDir() < 0)
-				ball.getPosition().setY(bumper.getAnchor().getY() + (bumper.getHeight()/2 + ball.getRadius()));
+			if (rail.getyDir() > 0)
+				ball.getPosition().setY(rail.getAnchor().getY() - (rail.getHeight()/2 + ball.getRadius()));
+			if (rail.getyDir() < 0)
+				ball.getPosition().setY(rail.getAnchor().getY() + (rail.getHeight()/2 + ball.getRadius()));
 		}
 		
 		// Change velocity
