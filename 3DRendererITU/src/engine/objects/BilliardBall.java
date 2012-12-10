@@ -1,7 +1,7 @@
 package engine.objects;
 
-import engine.TransformManager;
 import engine.math.Point3D;
+import engine.math.TransformManager;
 import engine.math.Vector3D;
 import engine.physics.Movable;
 import engine.shapes.Sphere;

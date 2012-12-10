@@ -1,7 +1,13 @@
 package engine.rendering;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
+
+import javax.swing.JPanel;
 
 import engine.math.Matrix;
 import engine.math.Point2D;
@@ -29,9 +35,9 @@ public class WireframeRenderer extends Renderer {
 	 * @param scene
 	 * @param screen
 	 */
-	public void render(Scene scene, Screen screen){
+	public void render(Scene scene, Screen screen, JPanel panel){
 		
-		ArrayList<Triangle2D> newRendering = new ArrayList<Triangle2D>();
+		BufferedImage newRendering = new BufferedImage(screen.getWidth(), screen.getHeight(), BufferedImage.TYPE_INT_RGB);
 		
 		//SETTING THE CAMERA LOCATION
 		Matrix camTransMatrix = new Matrix(new double[][] {{1,0,0,-scene.getCamera().getX()},
@@ -57,6 +63,7 @@ public class WireframeRenderer extends Renderer {
 		double far = 100000;
 		
 		double viewPlaneWidth = (Math.tan(scene.getCamera().getAngle()/2)*near)*2;
+		
 		double viewPlaneHeight = viewPlaneWidth/screen.getScreenRatio();
 
 		
@@ -98,6 +105,10 @@ public class WireframeRenderer extends Renderer {
 			}
 		}
 		
+		Graphics g = newRendering.getGraphics();
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, screen.getWidth(), screen.getHeight());
+		
 		while(!pq.isEmpty()){
 			Triangle3D t = pq.poll();
 			
@@ -109,13 +120,46 @@ public class WireframeRenderer extends Renderer {
 			if (!(screen.isOutsideScreen(a2) && screen.isOutsideScreen(b2) && screen.isOutsideScreen(c2))){
 				Triangle2D t2 = new Triangle2D(a2,b2,c2);
 				t2.setColor(t.getColor());
-				newRendering.add(t2); 
+				
+				drawTriangle(t2, newRendering);
 				
 			}
 		}
 		
 		pq.clear();
+		
 		lastRendering = newRendering;
-	}	
+		//draw(panel.getGraphics(), screen);
+		panel.repaint();
+	}
+	
+	private void drawTriangle(Triangle2D t2, BufferedImage newRendering) {
+		
+		//t2.setColor(Color.BLACK);
+		//t2.fillRect(0, 0, newRendering.getWidth(), newRendering.getHeight());
+
+		int[]x = new int[3];
+		int[]y = new int[3];
+		x[0] = (int) t2.getA().getX(); x[1] = (int) t2.getB().getX(); x[2] = (int) t2.getC().getX();			
+		y[0] = (int) t2.getA().getY(); y[1] = (int) t2.getB().getY(); y[2] = (int) t2.getC().getY();
+		//Polygon p = new Polygon(x, y, 3);
+		
+		Graphics g = newRendering.getGraphics();
+		
+		// PAINTERS
+		//g.setColor(t2.getColor());
+		//System.out.println("t2d's color = "+t.getColor());
+		//g.fillPolygon(x, y, 3);
+			
+		g.setColor(Color.GREEN);
+		g.drawLine( (int)t2.getA().getX(), (int)t2.getA().getY(), 
+					 	(int)t2.getB().getX(), (int)t2.getB().getY());
+ 
+		g.drawLine( (int)t2.getB().getX(), (int)t2.getB().getY(), 
+					 	(int)t2.getC().getX(), (int)t2.getC().getY());
+ 
+		g.drawLine( (int)t2.getC().getX(), (int)t2.getC().getY(), 
+						(int)t2.getA().getX(), (int)t2.getA().getY());
+	}
 	
 }

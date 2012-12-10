@@ -92,40 +92,16 @@ public abstract class BilliardGame extends JPanel {
 	 */
 	private void draw() {
 		
-		renderer.render(scene, screen);
+		renderer.render(scene, screen, this);
 		
-		repaint();
+		//repaint();
 		
 	}
 	
 	public void paintComponent(Graphics g) {
 		
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, getWidth(), getHeight());
+		g.drawImage(renderer.getLastRendering(), 0, 0, null);
 		
-
-		for(Triangle2D t : renderer.getRenderedTriangles()){
-			int[]x = new int[3];
-			int[]y = new int[3];
-			x[0] = (int) t.getA().getX(); x[1] = (int) t.getB().getX(); x[2] = (int) t.getC().getX();			
-			y[0] = (int) t.getA().getY(); y[1] = (int) t.getB().getY(); y[2] = (int) t.getC().getY();
-			//Polygon p = new Polygon(x, y, 3);
-			
-			g.setColor(t.getColor());
-			//System.out.println("t2d's color = "+t.getColor());
-			//g.fillPolygon(x, y, 3);
-			
-			g.setColor(Color.GREEN);
-			g.drawLine( (int)t.getA().getX(), (int)t.getA().getY(), 
-					 	(int)t.getB().getX(), (int)t.getB().getY());
- 
-			g.drawLine( (int)t.getB().getX(), (int)t.getB().getY(), 
-					 	(int)t.getC().getX(), (int)t.getC().getY());
- 
-			g.drawLine( (int)t.getC().getX(), (int)t.getC().getY(), 
-						(int)t.getA().getX(), (int)t.getA().getY());
-
-		}
 	}
 	
 	public Color calculateColor(Triangle3D t){

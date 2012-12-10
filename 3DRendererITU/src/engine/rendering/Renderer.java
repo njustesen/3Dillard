@@ -1,7 +1,13 @@
 package engine.rendering;
 
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import javax.swing.JPanel;
+
+import engine.BilliardGame;
+import engine.rendering.Screen;
 import engine.math.Matrix;
 import engine.math.Point2D;
 import engine.math.Point3D;
@@ -12,9 +18,61 @@ import engine.shapes.Triangle3D;
 
 public abstract class Renderer {
 	
-	protected ArrayList<Triangle2D> lastRendering;
+	protected BufferedImage lastRendering;
 
-	public abstract void render(Scene scene, Screen screen);
+	public abstract void render(Scene scene, Screen screen, JPanel panel);
+
+	public BufferedImage getLastRendering() {
+		return lastRendering;
+	}
+	
+	/**
+	 * Renders a vertex.
+	 * @param p
+	 * @param screen
+	 * @param projectionMatrix
+	 * @param cameraLookMatrix
+	 * @param cameraTransMatrix
+	 * @return
+	 */
+	protected Triangle3D createViewspaceTriangle(	Triangle3D t, 
+												Screen screen,  
+												Matrix cameraLookMatrix, 
+												Matrix cameraTransMatrix){
+		
+		Matrix viewspaceMatrix = cameraLookMatrix.multiplication(cameraTransMatrix);
+
+		Point3D viewspacePointA = viewspaceMatrix.multiplication(t.getPointA());
+		Point3D viewspacePointB = viewspaceMatrix.multiplication(t.getPointB());
+		Point3D viewspacePointC = viewspaceMatrix.multiplication(t.getPointC());
+		
+		Triangle3D viewspaceTriangle = new Triangle3D(viewspacePointA, viewspacePointB, viewspacePointC);
+		
+		return viewspaceTriangle;
+	}
+	
+	protected Triangle3D createPerspectiveTriangle(Triangle3D t, 
+											Screen screen, 
+											Matrix perspectiveMatrix){
+
+		Point3D viewspacePointA = perspectiveMatrix.multiplication(t.getPointA());
+		Point3D viewspacePointB = perspectiveMatrix.multiplication(t.getPointB());
+		Point3D viewspacePointC = perspectiveMatrix.multiplication(t.getPointC());
+		
+		viewspacePointA.setX(viewspacePointA.getX()/viewspacePointA.getW());
+		viewspacePointA.setY(viewspacePointA.getY()/viewspacePointA.getW());
+		viewspacePointA.setZ(viewspacePointA.getZ()/viewspacePointA.getW());
+		
+		viewspacePointB.setX(viewspacePointB.getX()/viewspacePointB.getW());
+		viewspacePointB.setY(viewspacePointB.getY()/viewspacePointB.getW());
+		viewspacePointB.setZ(viewspacePointB.getZ()/viewspacePointB.getW());
+		
+		viewspacePointC.setX(viewspacePointC.getX()/viewspacePointC.getW());
+		viewspacePointC.setY(viewspacePointC.getY()/viewspacePointC.getW());
+		viewspacePointC.setZ(viewspacePointC.getZ()/viewspacePointC.getW());
+			
+		return new Triangle3D(viewspacePointA, viewspacePointB, viewspacePointC);
+	}
 	
 	protected Triangle3D toObjectView(Triangle3D t, Shape3D shape) {
 		return new Triangle3D(new Point3D(t.getPointA().getX() + shape.getAnchor().getX(),
@@ -88,9 +146,15 @@ public abstract class Renderer {
 		return new Point2D(x,y);
 		
 	}
-
-	public ArrayList<Triangle2D> getRenderedTriangles() {
-		return lastRendering;
+	
+	protected Point3D screenPoint(Screen screen, Point3D viewspacePoint){
+		
+		int x = (int) (viewspacePoint.getX()*(screen.getWidth()/2)+(screen.getWidth()/2));
+		int y = (int) (viewspacePoint.getY()*(screen.getHeight()/2)+(screen.getHeight()/2));
+		double z = viewspacePoint.getZ();
+		
+		return new Point3D(x, y, z);
+		
 	}
 	
 }

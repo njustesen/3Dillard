@@ -1,10 +1,11 @@
 package game;
 
 import engine.BilliardGame;
-import engine.TransformManager;
 import engine.math.Point3D;
+import engine.math.TransformManager;
 import engine.math.Vector3D;
 import engine.objects.BilliardCamera;
+import engine.rendering.ScanlineRenderer;
 
 
 @SuppressWarnings("serial")
@@ -30,6 +31,8 @@ public class EightBallGame extends BilliardGame {
 		scene.getCamera().setLookpoint( ((EightBallScene)scene).getCueBall().getPosition() );
 		
 		shooting = false;
+		
+		setRender(new ScanlineRenderer(screen));
 		
 	}
 

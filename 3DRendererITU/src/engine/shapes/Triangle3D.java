@@ -1,5 +1,6 @@
 package engine.shapes;
 import java.awt.Color;
+import java.awt.Rectangle;
 
 import engine.math.Point3D;
 import engine.math.Vector3D;
@@ -104,6 +105,20 @@ public class Triangle3D implements Comparable<Triangle3D>{
 		else if(c <= 0){
 			this.color = new Color(0, 0, 0);
 		}else this.color = new Color(255, 255, 255);
+	}
+	
+	public Rectangle getBoundingRectangle(){
+		
+		double minX = Math.min(c.getX(), Math.min(a.getX(), b.getX()));
+		double minY = Math.min(c.getY(), Math.min(a.getY(), b.getY()));
+		
+		double maxX = Math.max(c.getX(), Math.max(a.getX(), b.getX()));
+		double maxY = Math.max(c.getY(), Math.max(a.getY(), b.getY()));
+		
+		double xDif = maxX - minX;
+		double yDif = maxY - minY;
+		
+		return new Rectangle((int)minX, (int)minY, (int)xDif, (int)yDif);
 	}
 	
 	public Vector3D getSurfaceNormal(){

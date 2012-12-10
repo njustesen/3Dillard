@@ -48,8 +48,12 @@ public class EightBallScene extends Scene {
 		BilliardTable table = new BilliardTable(new Point3D(0,0,-diameter*1.5), 140, 270, 10, 20, diameter*1.8, 0.01);
 		objects.add(table);
 		
-		Light light = new Light(new Point3D(0,10000,0), 100, Color.white);
-		lights.add(light);
+		Light lightA = new Light(new Point3D(0,0,1000), 100, Color.white);
+		lights.add(lightA);
+		Light lightB = new Light(new Point3D(0,800,800), 100, Color.white);
+		lights.add(lightB);
+		Light lightC = new Light(new Point3D(0,-800,800), 100, Color.white);
+		lights.add(lightC);
 	}
 
 	@Override

@@ -1,8 +1,5 @@
-package engine;
+package engine.math;
 
-import engine.math.Matrix;
-import engine.math.Point3D;
-import engine.math.Vector3D;
 import engine.objects.GameObject;
 import engine.shapes.Shape3D;
 import engine.shapes.Triangle3D;
