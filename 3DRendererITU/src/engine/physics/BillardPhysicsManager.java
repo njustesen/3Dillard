@@ -3,13 +3,13 @@ package engine.physics;
 import java.util.ArrayList;
 import engine.math.Vector2D;
 import engine.math.Vector3D;
-import engine.objects.Bumper;
+import engine.objects.Rail;
 import engine.objects.BilliardBall;
 import engine.objects.BilliardTable;
 import engine.objects.GameObject;
 import engine.rendering.Scene;
 
-public class BillardPhysicsManager extends PhysicsManager {
+public class BillardPhysicsManager {
 
 	private static final double velocityLimit = 0.01;	// 1 cm/sec
 	private ArrayList<BilliardBall> balls;
@@ -23,7 +23,6 @@ public class BillardPhysicsManager extends PhysicsManager {
 		
 	}
 
-	@Override
 	public void move(long delta) {
 		
 		int iterations = Math.max(1, (int) (delta/1000.0 * iterationsPerSecond) );
@@ -80,7 +79,7 @@ public class BillardPhysicsManager extends PhysicsManager {
 			}
 			
 			// Test collision with bumpers
-			checkBumperCollisions(ball);
+			checkRailCollisions(ball);
 						
 			// Test collision with balls
 			for(int i = balls.indexOf(ball); i < balls.size(); i++){
@@ -188,24 +187,24 @@ public class BillardPhysicsManager extends PhysicsManager {
 		
 	}
 
-	private void checkBumperCollisions(BilliardBall ball) {
+	private void checkRailCollisions(BilliardBall ball) {
 		
-		if (checkBumperCollision(table.getBumperTopA(), ball)) 
-			bumperCollision(table.getBumperTopA(), ball);
-		if (checkBumperCollision(table.getBumperTopB(), ball)) 
-			bumperCollision(table.getBumperTopB(), ball);
-		if (checkBumperCollision(table.getBumperRight(), ball))
-			bumperCollision(table.getBumperRight(), ball);
-		if (checkBumperCollision(table.getBumperLeft(), ball))
-			bumperCollision(table.getBumperLeft(), ball);
-		if (checkBumperCollision(table.getBumperBottomA(), ball))
-			bumperCollision(table.getBumperBottomA(), ball);
-		if (checkBumperCollision(table.getBumperBottomB(), ball))
-			bumperCollision(table.getBumperBottomB(), ball);
+		if (checkRailCollision(table.getRailTopA(), ball)) 
+			bumperCollision(table.getRailTopA(), ball);
+		if (checkRailCollision(table.getRailTopB(), ball)) 
+			bumperCollision(table.getRailTopB(), ball);
+		if (checkRailCollision(table.getRailRight(), ball))
+			bumperCollision(table.getRailRight(), ball);
+		if (checkRailCollision(table.getRailLeft(), ball))
+			bumperCollision(table.getRailLeft(), ball);
+		if (checkRailCollision(table.getRailBottomA(), ball))
+			bumperCollision(table.getRailBottomA(), ball);
+		if (checkRailCollision(table.getRailBottomB(), ball))
+			bumperCollision(table.getRailBottomB(), ball);
 		
 	}
 
-	private boolean checkBumperCollision(Bumper bumper, BilliardBall ball) {
+	private boolean checkRailCollision(Rail bumper, BilliardBall ball) {
 		
 		boolean collision = true;
 
@@ -224,7 +223,7 @@ public class BillardPhysicsManager extends PhysicsManager {
 		
 	}
 	
-	private void bumperCollision(Bumper bumper, BilliardBall ball) {
+	private void bumperCollision(Rail bumper, BilliardBall ball) {
 		
 		int x = 1;
 		int y = 1;

@@ -4,22 +4,22 @@ import engine.math.Point3D;
 
 public class BilliardTable extends GameObject {
 	
-	double width, height, depth, bumperWidth, pocketRadius;
+	double width, height, depth, railsWidth, pocketRadius;
 	double friction;
-	Bumper bumperTopA;
-	Bumper bumperTopB;
-	Bumper bumperLeft;
-	Bumper bumperRight;
-	Bumper bumperBottomA;
-	Bumper bumperBottomB;
+	Rail railTopA;
+	Rail railTopB;
+	Rail railLeft;
+	Rail railRight;
+	Rail railBottomA;
+	Rail railBottomB;
 	Cloth cloth;
 
-	public BilliardTable(Point3D position, double height, double width, double depth, double bumpersWidth, double pocketRadius, double friction) {
+	public BilliardTable(Point3D position, double height, double width, double depth, double railssWidth, double pocketRadius, double friction) {
 		super(position);
 		this.width = width; 
 		this.height = height;
 		this.depth = depth;
-		this.bumperWidth = bumpersWidth;
+		this.railsWidth = railssWidth;
 		this.friction = friction;
 		this.pocketRadius = pocketRadius;
 		build();
@@ -35,40 +35,40 @@ public class BilliardTable extends GameObject {
 		addShape(cloth);
 		
 		// TOP A
-		bumperTopA = new Bumper(new Point3D(width / 4, height/2 + bumperWidth/2, depth/4), bumperWidth, width/2 - pocketDiameter, depth*1.5);
-		bumperTopA.setxDir(0);
-		bumperTopA.setyDir(1);
-		addShape(bumperTopA);
+		railTopA = new Rail(new Point3D(width / 4, height/2 + railsWidth/2, depth/4), railsWidth, width/2 - pocketDiameter, depth*1.5);
+		railTopA.setxDir(0);
+		railTopA.setyDir(1);
+		addShape(railTopA);
 		
 		// TOP B
-		bumperTopB = new Bumper(new Point3D(-width / 4, height/2 + bumperWidth/2, depth/4), bumperWidth, width/2 - pocketDiameter, depth*1.5);
-		bumperTopB.setxDir(0);
-		bumperTopB.setyDir(1);
-		addShape(bumperTopB);
+		railTopB = new Rail(new Point3D(-width / 4, height/2 + railsWidth/2, depth/4), railsWidth, width/2 - pocketDiameter, depth*1.5);
+		railTopB.setxDir(0);
+		railTopB.setyDir(1);
+		addShape(railTopB);
 		
 		// BOTTOM A
-		bumperBottomA = new Bumper(new Point3D(width / 4, -height/2 - bumperWidth/2, depth/4), bumperWidth, width/2 - pocketDiameter, depth*1.5);
-		bumperBottomA.setxDir(0);
-		bumperBottomA.setyDir(-1);
-		addShape(bumperBottomA);
+		railBottomA = new Rail(new Point3D(width / 4, -height/2 - railsWidth/2, depth/4), railsWidth, width/2 - pocketDiameter, depth*1.5);
+		railBottomA.setxDir(0);
+		railBottomA.setyDir(-1);
+		addShape(railBottomA);
 		
 		// BOTTOM B
-		bumperBottomB = new Bumper(new Point3D(-width / 4, -height/2 - bumperWidth/2, depth/4), bumperWidth, width/2 - pocketDiameter, depth*1.5);
-		bumperBottomB.setxDir(0);
-		bumperBottomB.setyDir(-1);
-		addShape(bumperBottomB);
+		railBottomB = new Rail(new Point3D(-width / 4, -height/2 - railsWidth/2, depth/4), railsWidth, width/2 - pocketDiameter, depth*1.5);
+		railBottomB.setxDir(0);
+		railBottomB.setyDir(-1);
+		addShape(railBottomB);
 		
 		// LEFT
-		bumperLeft = new Bumper(new Point3D(-width/2 - bumperWidth/2, 0, depth/4), height - pocketDiameter, bumperWidth, depth*1.5);
-		bumperLeft.setxDir(-1);
-		bumperLeft.setyDir(0);
-		addShape(bumperLeft);
+		railLeft = new Rail(new Point3D(-width/2 - railsWidth/2, 0, depth/4), height - pocketDiameter, railsWidth, depth*1.5);
+		railLeft.setxDir(-1);
+		railLeft.setyDir(0);
+		addShape(railLeft);
 		
 		// RIGHT
-		bumperRight = new Bumper(new Point3D(width/2 + bumperWidth/2, 0, depth/4), height - pocketDiameter, bumperWidth, depth*1.5);
-		bumperRight.setxDir(1);
-		bumperRight.setyDir(0);
-		addShape(bumperRight);
+		railRight = new Rail(new Point3D(width/2 + railsWidth/2, 0, depth/4), height - pocketDiameter, railsWidth, depth*1.5);
+		railRight.setxDir(1);
+		railRight.setyDir(0);
+		addShape(railRight);
 		
 	}
 
@@ -100,64 +100,64 @@ public class BilliardTable extends GameObject {
 		this.depth = depth;
 	}
 
-	public double getBumperWidth() {
-		return bumperWidth;
+	public double getRailsWidth() {
+		return railsWidth;
 	}
 
-	public void setBumperWidth(double bumperWidth) {
-		this.bumperWidth = bumperWidth;
+	public void setRailsWidth(double railsWidth) {
+		this.railsWidth = railsWidth;
 	}
 
 	public void setFriction(double friction) {
 		this.friction = friction;
 	}
 
-	public Bumper getBumperTopA() {
-		return bumperTopA;
+	public Rail getRailTopA() {
+		return railTopA;
 	}
 
-	public void setBumperTopA(Bumper bumperTop) {
-		this.bumperTopA = bumperTop;
+	public void setRailTopA(Rail railTop) {
+		this.railTopA = railTop;
 	}
 	
-	public Bumper getBumperTopB() {
-		return bumperTopB;
+	public Rail getRailTopB() {
+		return railTopB;
 	}
 
-	public void setBumperTopB(Bumper bumperTop) {
-		this.bumperTopB = bumperTop;
+	public void setRailTopB(Rail railTop) {
+		this.railTopB = railTop;
 	}
 
-	public Bumper getBumperLeft() {
-		return bumperLeft;
+	public Rail getRailLeft() {
+		return railLeft;
 	}
 
-	public void setBumperLeft(Bumper bumperLeft) {
-		this.bumperLeft = bumperLeft;
+	public void setRailLeft(Rail railLeft) {
+		this.railLeft = railLeft;
 	}
 
-	public Bumper getBumperRight() {
-		return bumperRight;
+	public Rail getRailRight() {
+		return railRight;
 	}
 
-	public void setBumperRight(Bumper bumperRight) {
-		this.bumperRight = bumperRight;
+	public void setRailRight(Rail railRight) {
+		this.railRight = railRight;
 	}
 
-	public Bumper getBumperBottomA() {
-		return bumperBottomA;
+	public Rail getRailBottomA() {
+		return railBottomA;
 	}
 
-	public void setBumperBottomA(Bumper bumperBottom) {
-		this.bumperBottomA = bumperBottom;
+	public void setRailBottomA(Rail railBottom) {
+		this.railBottomA = railBottom;
 	}
 	
-	public Bumper getBumperBottomB() {
-		return bumperBottomB;
+	public Rail getRailBottomB() {
+		return railBottomB;
 	}
 
-	public void setBumperBottomB(Bumper bumperBottom) {
-		this.bumperBottomB = bumperBottom;
+	public void setRailBottomB(Rail railBottom) {
+		this.railBottomB = railBottom;
 	}
 
 	public Cloth getCloth() {

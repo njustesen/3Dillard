@@ -3,12 +3,12 @@ package engine.objects;
 import engine.math.Point3D;
 import engine.shapes.Cube;
 
-public class Bumper extends Cube {
+public class Rail extends Cube {
 	
 	int xDir;
 	int yDir;
 	
-	public Bumper(Point3D anchor, double height, double width, double depth) {
+	public Rail(Point3D anchor, double height, double width, double depth) {
 		super(anchor, height, width, depth);
 		
 		this.xDir = 0;
@@ -16,7 +16,7 @@ public class Bumper extends Cube {
 		
 	}
 
-	public Bumper(Point3D anchor, double height, double width, double depth, int xDir, int yDir) {
+	public Rail(Point3D anchor, double height, double width, double depth, int xDir, int yDir) {
 		super(anchor, height, width, depth);
 		
 		this.xDir = xDir;

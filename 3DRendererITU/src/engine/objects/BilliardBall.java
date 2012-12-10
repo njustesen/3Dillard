@@ -8,7 +8,7 @@ import engine.shapes.Sphere;
 
 public class BilliardBall extends GameObject implements Movable {
 
-	private static final int gradient = 10;
+	private static final int gradient = 12;
 	
 	private int number;
 	private double radius;
