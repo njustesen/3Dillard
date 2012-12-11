@@ -20,6 +20,9 @@ public class InputManager implements KeyListener, MouseListener, MouseMotionList
 	boolean sDown;
 	boolean aDown;
 	boolean dDown;
+	boolean Down1;
+	boolean Down2;
+	boolean Down3;
 	boolean controlDown;
 	Point2D mousePosition;
 	long mouseDownTimeStart;
@@ -75,6 +78,9 @@ public class InputManager implements KeyListener, MouseListener, MouseMotionList
 			case KeyEvent.VK_S: sDown = true; break;
 			case KeyEvent.VK_A: aDown = true; break;
 			case KeyEvent.VK_D: dDown = true; break;
+			case KeyEvent.VK_1: Down1 = true; break;
+			case KeyEvent.VK_2: Down2 = true; break;
+			case KeyEvent.VK_3: Down3 = true; break;
 		}
 		
 	}
@@ -91,6 +97,9 @@ public class InputManager implements KeyListener, MouseListener, MouseMotionList
 			case KeyEvent.VK_S: sDown = false; break;
 			case KeyEvent.VK_A: aDown = false; break;
 			case KeyEvent.VK_D: dDown = false; break;
+			case KeyEvent.VK_1: Down1 = false; break;
+			case KeyEvent.VK_2: Down2 = false; break;
+			case KeyEvent.VK_3: Down3 = false; break;
 		}
 		
 	}
@@ -149,6 +158,18 @@ public class InputManager implements KeyListener, MouseListener, MouseMotionList
 	
 	public boolean isMouseLeftDown(){
 		return mouseLeftDown;
+	}
+
+	public boolean isDown1() {
+		return Down1;
+	}
+
+	public boolean isDown2() {
+		return Down2;
+	}
+
+	public boolean isDown3() {
+		return Down3;
 	}
 	
 }

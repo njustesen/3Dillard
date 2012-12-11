@@ -1,19 +1,15 @@
 package engine.rendering;
 
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import engine.BilliardGame;
 import engine.rendering.Screen;
 import engine.math.Matrix;
 import engine.math.Point2D;
 import engine.math.Point3D;
 import engine.objects.GameObject;
 import engine.shapes.Shape3D;
-import engine.shapes.Triangle2D;
 import engine.shapes.Triangle3D;
 
 public abstract class Renderer {

@@ -1,9 +1,7 @@
 package engine.rendering;
 
-import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.Set;
@@ -17,7 +15,6 @@ import engine.math.Point3D;
 import engine.math.Vector3D;
 import engine.rendering.Screen;
 import engine.shapes.Shape3D;
-import engine.shapes.Triangle2D;
 import engine.shapes.Triangle3D;
 import engine.objects.Light;
 
@@ -26,7 +23,7 @@ public class ScanlineRenderer extends Renderer {
 	private PriorityQueue<Triangle3D> pq;
 	private double[][] zbuffer;
 	
-	public ScanlineRenderer(Screen s){
+	public ScanlineRenderer(){
 		
 	//	lastRendering = new ArrayList<Triangle2D>();
 		pq = new PriorityQueue<Triangle3D>();
@@ -77,12 +74,13 @@ public class ScanlineRenderer extends Renderer {
 				   											  {0,(2*near)/viewPlaneHeight,0,0},
 				   											  {0,0,-(far+near)/(far-near),(-2*far*near)/(far-near)},
 				   											  {0,0,-1,0}});
-		int newColor = 0;
+		
 		
 		for(GameObject obj : scene.getObjects()){
 			for(Shape3D shape: obj.getShapes()){
 				for(Triangle3D t: shape.getTriangles()){
 					
+					int newColor = 0;
 					
 					// Triangle to object view
 					Triangle3D objectTriangle = toObjectView(t, shape);
@@ -92,23 +90,31 @@ public class ScanlineRenderer extends Renderer {
 					
 					Triangle3D viewspaceTriangle = createViewspaceTriangle(worldTriangle, screen, camLookMatrix, camTransMatrix);
 					
-					double az = viewspaceTriangle.getPointA().getZ() - 10000;
-					double bz = viewspaceTriangle.getPointB().getZ() - 10000;
-					double cz = viewspaceTriangle.getPointC().getZ() - 10000;
+					//double az = viewspaceTriangle.getPointA().getZ();
+					//double bz = viewspaceTriangle.getPointB().getZ();
+					//double cz = viewspaceTriangle.getPointC().getZ();
+					
+					for(Light light: scene.getLights()){
+						
+						Vector3D lightV3D = light.getPosition().toVector().subtract(t.getCenter().toVector()).getUnitVector();
+						
+						newColor += (int)((t.getSurfaceNormal().getUnitVector().getDotProduct(lightV3D))*light.getIntensity());
+	
+					}
+					
+					//Triangle3D perspectiveTriangle = viewspaceTriangle;
 					
 					Triangle3D perspectiveTriangle = createPerspectiveTriangle(viewspaceTriangle, screen, projectionMatrix);
-					
+					/*
 					perspectiveTriangle.getPointA().setZ(az);
 					perspectiveTriangle.getPointB().setZ(bz);
 					perspectiveTriangle.getPointC().setZ(cz);
+					*/				
 					
-					for(Light light: scene.getLights()){
+					perspectiveTriangle.getPointA().setZ(-perspectiveTriangle.getPointA().getZ());
+					perspectiveTriangle.getPointB().setZ(-perspectiveTriangle.getPointB().getZ());
+					perspectiveTriangle.getPointC().setZ(-perspectiveTriangle.getPointC().getZ());
 					
-						Vector3D lightV3D = light.getPosition().toVector().subtract(t.getCenter().toVector()).getUnitVector();
-						
-						newColor = (int)((t.getSurfaceNormal().getUnitVector().getDotProduct(lightV3D))*light.getIntensity());
-	
-					}
 					
 					perspectiveTriangle.setColor(newColor);
 					
@@ -141,12 +147,12 @@ public class ScanlineRenderer extends Renderer {
 		rgb[1] = screenTriangle.getColor().getGreen();
 		rgb[2] = screenTriangle.getColor().getBlue();
 		
-	/*	
+		/*
 		Random r = new Random();
 		rgb[0] = r.nextInt(255);
 		rgb[1] = r.nextInt(255);
 		rgb[2] = r.nextInt(255);
-	*/	
+		*/
 
 		for(int y = bounds.y; y <= bounds.y + bounds.height; y++){		
 			Point3D pa = null;
@@ -203,10 +209,6 @@ public class ScanlineRenderer extends Renderer {
 				}
 			}
 			
-			if (pa == null || pb == null){
-				pa = null;
-			}
-			
 			fillLine(pa,pb, screen, rgb, bi);
 			
 		}
@@ -221,9 +223,9 @@ public class ScanlineRenderer extends Renderer {
 			return;
 		}
 
-		int pax = (int) Math.round(pa.getX());
-		int pbx = (int) Math.round(pb.getX());
-		int y = (int) Math.round(pa.getY());
+		int pax = (int) pa.getX();
+		int pbx = (int) Math.ceil(pb.getX());
+		int y = (int) pa.getY();
 		
 		for(int x = pax; x <= pbx; x++){
 			if(x >= 0 && x < screen.getWidth() && y >= 0 && y < screen.getHeight()){

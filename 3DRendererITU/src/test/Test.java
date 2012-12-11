@@ -1,39 +1,31 @@
-package game;
+package test;
 
 import engine.BilliardGame;
 import engine.math.Point3D;
 import engine.math.TransformManager;
 import engine.math.Vector3D;
-import engine.objects.BilliardCamera;
-import engine.physics.PreemptivePhysicsManager;
 import engine.rendering.ScanlineRenderer;
 
-
 @SuppressWarnings("serial")
-public class EightBallGame extends BilliardGame {
+public class Test extends BilliardGame {
 	
-	private boolean shooting;
 	
 	/**
 	 * Constructor for Game.
 	 */
-	public EightBallGame(){
+	public Test(){
 		
 	}
 
 	@Override
 	protected void init() {
 		
-		scene = new EightBallScene();
-		
-		physicsManager = new PreemptivePhysicsManager();
+		scene = new SphereScene();
 		
 		physicsManager.setupFromScene(scene);
 		
 		// Move camera
-		scene.getCamera().setLookpoint( ((EightBallScene)scene).getCueBall().getPosition() );
-		
-		shooting = false;
+		//scene.getCamera().setLookpoint(  );
 		
 		setRender(new ScanlineRenderer());
 		
@@ -69,41 +61,6 @@ public class EightBallGame extends BilliardGame {
 		Vector3D rotated = TransformManager.rotateVector(camVector, 0, y * speed, z * speed);
 		rotated = look.add(rotated.toPoint()).toVector();
 		scene.getCamera().setPosition(rotated.toPoint());
-				
-		// Add force to ball
-		shoot();
-
-		// Simulate physics
-		physicsManager.move(delta);
-		
-	}
-	
-	private void shoot(){
-		
-		if (inputManager.isMouseLeftDown() && ((EightBallScene)scene).getCueBall().getVelocity().equals(Vector3D.Zero)){
-			
-			shooting = true;
-			
-		} else {
-		
-			if (shooting && inputManager.getMouseDownTime() > 0){
-						
-				Vector3D force = ((BilliardCamera) scene.getCamera()).getShootingDirection();
-				double power = Math.min(16, inputManager.getMouseDownTime() / 100);
-				force = force.multiply(power);
-						
-				((EightBallScene)scene).getCueBall().addVelocity( force );
-				
-				shooting = false;
-				
-			} else {
-	
-				// Move camera
-				scene.getCamera().setLookpoint( ((EightBallScene)scene).getCueBall().getPosition() );
-				
-			}
-			
-		}
 		
 	}
 

@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.PriorityQueue;
+
 import javax.swing.JPanel;
+
 import engine.math.Matrix;
 import engine.math.Point2D;
 import engine.math.Vector3D;
@@ -15,11 +17,11 @@ import engine.shapes.Triangle2D;
 import engine.shapes.Triangle3D;
 
 
-public class WireframeRenderer extends Renderer {
+public class PaintersRenderer extends Renderer {
 	
 	private PriorityQueue<Triangle3D> pq;
 	
-	public WireframeRenderer(){
+	public PaintersRenderer(){
 		
 		pq = new PriorityQueue<Triangle3D>();
 		
@@ -67,8 +69,7 @@ public class WireframeRenderer extends Renderer {
 				   											  {0,(2*near)/viewPlaneHeight,0,0},
 				   											  {0,0,-(far+near)/(far-near),(-2*far*near)/(far-near)},
 				   											  {0,0,-1,0}});
-		int newColor = 0;
-		
+
 		for(GameObject obj : scene.getObjects()){
 			
 			if (!obj.isVisible()){
@@ -78,6 +79,7 @@ public class WireframeRenderer extends Renderer {
 			for(Shape3D shape: obj.getShapes()){
 				for(Triangle3D t: shape.getTriangles()){
 					
+					int newColor = 0;
 					
 					// Triangle to object view
 					Triangle3D objectTriangle = toObjectView(t, shape);
@@ -85,18 +87,36 @@ public class WireframeRenderer extends Renderer {
 					// Triangle to world view
 					Triangle3D worldTriangle = toWorldView(objectTriangle, obj);
 					
-					Triangle3D viewspaceTriangle = createViewspaceTriangle(worldTriangle, screen, projectionMatrix, camLookMatrix, camTransMatrix);
-					
+					Triangle3D viewspaceTriangle = createViewspaceTriangle(worldTriangle, screen, camLookMatrix, camTransMatrix);
+									
+					//double az = viewspaceTriangle.getPointA().getZ();
+					//double bz = viewspaceTriangle.getPointB().getZ();
+					//double cz = viewspaceTriangle.getPointC().getZ();
 					
 					for(Light light: scene.getLights()){
-						Vector3D lightV3D = light.getPosition().toVector().subtract(t.getCenter().toVector());
 						
-					//	System.out.println("viewspaceNormal light dot = "+(int) (viewspaceTriangle.getSurfaceNormal().getDotProduct(lightV3D)*light.getIntensity()));
-					//	System.out.println("l vector = "+light.getPosition());
-						newColor = (int)(viewspaceTriangle.getSurfaceNormal().getDotProduct(lightV3D)*light.getIntensity());
+						Vector3D lightV3D = light.getPosition().toVector().subtract(t.getCenter().toVector()).getUnitVector();
+						
+						newColor += (int)((t.getSurfaceNormal().getUnitVector().getDotProduct(lightV3D))*light.getIntensity());
+	
 					}
-					viewspaceTriangle.setColor(newColor);
-					pq.add(viewspaceTriangle);
+					
+					//Triangle3D perspectiveTriangle = viewspaceTriangle;
+					
+					Triangle3D perspectiveTriangle = createPerspectiveTriangle(viewspaceTriangle, screen, projectionMatrix);
+					/*
+					perspectiveTriangle.getPointA().setZ(az);
+					perspectiveTriangle.getPointB().setZ(bz);
+					perspectiveTriangle.getPointC().setZ(cz);
+					*/				
+					
+					perspectiveTriangle.getPointA().setZ(-perspectiveTriangle.getPointA().getZ());
+					perspectiveTriangle.getPointB().setZ(-perspectiveTriangle.getPointB().getZ());
+					perspectiveTriangle.getPointC().setZ(-perspectiveTriangle.getPointC().getZ());
+					
+					perspectiveTriangle.setColor(newColor);
+					
+					pq.add(perspectiveTriangle);
 				}
 			}
 		}
@@ -107,6 +127,7 @@ public class WireframeRenderer extends Renderer {
 		
 		while(!pq.isEmpty()){
 			Triangle3D t = pq.poll();
+			System.out.println(t.getDeepestZ());
 			
 			Point2D a2 = make2D(screen, t.getPointA());
 			Point2D b2 = make2D(screen, t.getPointB());
@@ -131,8 +152,6 @@ public class WireframeRenderer extends Renderer {
 	
 	private void drawTriangle(Triangle2D t2, BufferedImage newRendering) {
 		
-		//t2.setColor(Color.BLACK);
-		//t2.fillRect(0, 0, newRendering.getWidth(), newRendering.getHeight());
 
 		int[]x = new int[3];
 		int[]y = new int[3];
@@ -143,11 +162,12 @@ public class WireframeRenderer extends Renderer {
 		Graphics g = newRendering.getGraphics();
 		
 		// PAINTERS
-		//g.setColor(t2.getColor());
+		g.setColor(t2.getColor());
 		//System.out.println("t2d's color = "+t.getColor());
-		//g.fillPolygon(x, y, 3);
+		g.fillPolygon(x, y, 3);
 			
 		g.setColor(Color.GREEN);
+		/*
 		g.drawLine( (int)t2.getA().getX(), (int)t2.getA().getY(), 
 					 	(int)t2.getB().getX(), (int)t2.getB().getY());
  
@@ -156,6 +176,7 @@ public class WireframeRenderer extends Renderer {
  
 		g.drawLine( (int)t2.getC().getX(), (int)t2.getC().getY(), 
 						(int)t2.getA().getX(), (int)t2.getA().getY());
+						*/
 	}
 	
 }

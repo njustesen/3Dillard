@@ -5,7 +5,7 @@ import engine.math.Point3D;
 public class BilliardTable extends GameObject {
 	
 	double width, height, depth, railsWidth, pocketRadius;
-	double friction;
+	double rollFriction, slideFriction;
 	Rail railTopA;
 	Rail railTopB;
 	Rail railLeft;
@@ -14,13 +14,14 @@ public class BilliardTable extends GameObject {
 	Rail railBottomB;
 	Cloth cloth;
 
-	public BilliardTable(Point3D position, double height, double width, double depth, double railssWidth, double pocketRadius, double friction) {
+	public BilliardTable(Point3D position, double height, double width, double depth, double railssWidth, double pocketRadius, double rollFriction, double slideFriction) {
 		super(position);
 		this.width = width; 
 		this.height = height;
 		this.depth = depth;
 		this.railsWidth = railssWidth;
-		this.friction = friction;
+		this.rollFriction = rollFriction;
+		this.slideFriction = slideFriction;
 		this.pocketRadius = pocketRadius;
 		build();
 	}
@@ -31,7 +32,7 @@ public class BilliardTable extends GameObject {
 		double pocketDiameter = pocketRadius * 2;
 		
 		// SURFACE
-		cloth = new Cloth(Point3D.Zero, height, width, depth, friction);
+		cloth = new Cloth(Point3D.Zero, height, width, depth, rollFriction, slideFriction);
 		addShape(cloth);
 		
 		// TOP A
@@ -71,11 +72,7 @@ public class BilliardTable extends GameObject {
 		addShape(railRight);
 		
 	}
-
-	public double getFriction() {
-		return friction;
-	}
-
+	
 	public double getWidth() {
 		return width;
 	}
@@ -106,10 +103,6 @@ public class BilliardTable extends GameObject {
 
 	public void setRailsWidth(double railsWidth) {
 		this.railsWidth = railsWidth;
-	}
-
-	public void setFriction(double friction) {
-		this.friction = friction;
 	}
 
 	public Rail getRailTopA() {

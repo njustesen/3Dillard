@@ -101,4 +101,6 @@ public class BilliardBall extends GameObject implements Movable {
 		visible = false;
 	}
 	
+	
+	
 }

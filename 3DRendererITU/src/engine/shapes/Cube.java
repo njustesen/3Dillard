@@ -20,38 +20,32 @@ public class Cube extends Shape3D {
 	public void build() {
 		
 		Point3D a = new Point3D(width/2, height/2, depth/2);
-		Point3D b = new Point3D(width/2, height/2, -depth/2);
-		Point3D c = new Point3D(width/2, -height/2, depth/2);
-		Point3D d = new Point3D(width/2, -height/2, -depth/2);
+		Point3D b = new Point3D(-width/2, height/2, depth/2);
+		Point3D c = new Point3D(-width/2, height/2, -depth/2);
+		Point3D d = new Point3D(width/2, height/2, -depth/2);
 		
-		Point3D e = new Point3D(-width/2, height/2, depth/2);
-		Point3D f = new Point3D(-width/2, height/2, -depth/2);
-		Point3D g = new Point3D(-width/2, -height/2, depth/2);
-		Point3D h = new Point3D(-width/2, -height/2, -depth/2);
+		Point3D e = new Point3D(width/2, -height/2, depth/2);
+		Point3D f = new Point3D(-width/2, -height/2, depth/2);
+		Point3D g = new Point3D(-width/2, -height/2, -depth/2);
+		Point3D h = new Point3D(width/2, -height/2, -depth/2);
 		
-		// TOP
-		triangles.add(new Triangle3D(a,b,e));
-		triangles.add(new Triangle3D(b,f,e));
-		
-		// RIGHT
+		triangles.add(new Triangle3D(a,b,d));
 		triangles.add(new Triangle3D(b,c,d));
-		triangles.add(new Triangle3D(b,a,c));
 		
-		// LEFT
-		triangles.add(new Triangle3D(f,g,e));
-		triangles.add(new Triangle3D(f,h,g));
+		triangles.add(new Triangle3D(c,b,g));
+		triangles.add(new Triangle3D(b,f,g));
 		
-		// BOTTOM
-		triangles.add(new Triangle3D(g,c,d));
-		triangles.add(new Triangle3D(g,h,d));
+		triangles.add(new Triangle3D(a,d,e));
+		triangles.add(new Triangle3D(d,h,e));
 		
-		// FRONT
-		triangles.add(new Triangle3D(c,a,e));
-		triangles.add(new Triangle3D(c,e,g));
+		triangles.add(new Triangle3D(d,c,h));
+		triangles.add(new Triangle3D(c,g,h));
 		
-		// BACK
-		triangles.add(new Triangle3D(f,b,h));
-		triangles.add(new Triangle3D(d,b,h));
+		triangles.add(new Triangle3D(b,a,f));
+		triangles.add(new Triangle3D(a,e,f));
+		
+		triangles.add(new Triangle3D(h,g,e));
+		triangles.add(new Triangle3D(g,f,e));
 
 	}
 

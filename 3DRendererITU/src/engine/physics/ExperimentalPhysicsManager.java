@@ -1,6 +1,8 @@
 package engine.physics;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import engine.math.Vector2D;
 import engine.math.Vector3D;
 import engine.objects.Rail;
@@ -9,34 +11,48 @@ import engine.objects.BilliardTable;
 import engine.objects.GameObject;
 import engine.rendering.Scene;
 
-public class BillardPhysicsManager {
+public class ExperimentalPhysicsManager {
 
-	private static final double velocityLimit = 0.01;	// 1 cm/sec
+	//private static final double velocityLimit = 0.00001;	// 1 cm/sec
 	private ArrayList<BilliardBall> balls;
 	private BilliardTable table;
 	private int iterationsPerSecond;
+	private BilliardPhysicsManager manager;
+	private ArrayList<HashMap<BilliardBall, Vector3D>> positionList;
 	
-	public BillardPhysicsManager(int iterationsPerSecond){
-		
+	public ExperimentalPhysicsManager(BilliardPhysicsManager manager, int iterationsPerSecond){
+		this.manager = manager;
 		balls = new ArrayList<BilliardBall>();
 		this.iterationsPerSecond = iterationsPerSecond;
+		positionList = new ArrayList<HashMap<BilliardBall, Vector3D>>();
 		
 	}
 
 	public void move(long delta) {
 		
-		int iterations = Math.max(1, (int) (delta/1000.0 * iterationsPerSecond) );
-		double iterationTime = delta/iterations;
+		boolean move = true;
 		
-		for(int i = 0; i < iterations; i++){
+		while(move){
 			
-			//long nano = System.nanoTime();
-			moveBalls(iterationTime);
-			//nano = System.nanoTime() - nano;
-			//double ms = nano / 1000000.0;
-			//System.out.println(ms);
+			manager.move(delta);
 			
-			checkCollisions();
+			move = false;
+			
+			for (BilliardBall b : manager.getBalls()){
+				
+				HashMap<BilliardBall, Vector3D> positions;
+				
+				//positions 
+				
+				if (b.getVelocity().getVectorLength() != 0){
+					
+					move = true;
+					
+					
+				}
+				
+			}
+			
 			
 		}
 		
@@ -54,17 +70,20 @@ public class BillardPhysicsManager {
 			
 			// Friction
 			double speed = ball.getVelocity().getVectorLength();
-			double deacceleration = table.getCloth().getDeaccelerationCoefficient() * speed;
+			double c = table.getCloth().getDeaccelerationCoefficient() / 20;
+			//double deacceleration = table.getCloth().getDeaccelerationCoefficient() * speed;
+			double deacceleration = c * ms;
+			
 			if (deacceleration >= speed){
 				speed = 0;
 			} else {
 				speed -= deacceleration;
 			}
-			
+			/*
 			if (speed < velocityLimit && speed != 0){
 				speed = 0;
 			}
-			
+			*/
 			Vector3D unit = ball.getVelocity().getUnitVector();
 			ball.setVelocity( unit.multiply(speed) );
 
@@ -214,21 +233,33 @@ public class BillardPhysicsManager {
 	}
 
 	private boolean checkRailCollision(Rail rail, BilliardBall ball) {
-		
-		boolean collision = true;
 
 		// Test
 		double distanceX = Math.abs( ball.getPosition().getX() - rail.getAnchor().getX() );
 		double distanceY = Math.abs( ball.getPosition().getY() - rail.getAnchor().getY() );
 		
 		if (distanceX > rail.getWidth() / 2 + ball.getRadius() * Math.abs(rail.getxDir())){
-			collision = false;
+			return false;
 		}
 		if (distanceY > rail.getHeight() / 2 + ball.getRadius() * Math.abs(rail.getyDir())){
-			collision = false;
+			return false;
 		}
 		
-		return collision;
+		if (distanceX <= rail.getWidth() / 2){
+			return true;
+		}
+		if (distanceY <= rail.getHeight() / 2){
+			return true;
+		}
+		
+		
+		
+		//calculate distance between center of circle and rectangle corner (a^2 + b^2)
+	    int cornerDistance = (int) (Math.pow((distanceX - rail.getWidth()/2), 2) +
+	                         Math.pow(distanceY - rail.getHeight()/2, 2));
+	    
+	    //if distance between circle and corner is less than circle-radius return true (if a^2 + b^2 <= c^2)
+	    return (cornerDistance <= (Math.pow(ball.getRadius(), 2)));
 		
 	}
 	

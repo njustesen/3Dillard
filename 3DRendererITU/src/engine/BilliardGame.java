@@ -8,12 +8,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import engine.input.InputManager;
 import engine.objects.Light;
-import engine.physics.BillardPhysicsManager;
+import engine.physics.BilliardPhysicsManager;
+import engine.physics.PhysicsManager;
+import engine.rendering.PaintersRenderer;
 import engine.rendering.Renderer;
+import engine.rendering.ScanlineRenderer;
 import engine.rendering.WireframeRenderer;
 import engine.rendering.Scene;
 import engine.rendering.Screen;
-import engine.shapes.Triangle2D;
 import engine.shapes.Triangle3D;
 
 @SuppressWarnings("serial")
@@ -24,7 +26,7 @@ public abstract class BilliardGame extends JPanel {
 	protected int screenHeight = 700;
 	
 	protected InputManager inputManager; 
-	protected BillardPhysicsManager physicsManager; 
+	protected PhysicsManager physicsManager; 
 	protected Screen screen;
 	protected Scene scene;
 	protected Renderer renderer;
@@ -39,7 +41,7 @@ public abstract class BilliardGame extends JPanel {
 		renderer = new WireframeRenderer();
 		
 		inputManager = new InputManager();
-		physicsManager = new BillardPhysicsManager(56); 
+		physicsManager = new BilliardPhysicsManager(56); 
 
     	setBackground(Color.black);
 		
@@ -66,7 +68,7 @@ public abstract class BilliardGame extends JPanel {
 			long delta = new Date().getTime() - lastUpdateTime;
 			if (delta > 1000 / FPS){
 				lastUpdateTime = new Date().getTime();
-				
+				changeRenderer();
 				update(delta);
 				draw();
 			} else {
@@ -79,6 +81,19 @@ public abstract class BilliardGame extends JPanel {
 		}
 	}
 	
+	private void changeRenderer() {
+		if (inputManager.isDown1()){
+			renderer = new WireframeRenderer();
+		}
+		if (inputManager.isDown2()){
+			renderer = new PaintersRenderer();
+		}
+		if (inputManager.isDown3()){
+			renderer = new ScanlineRenderer();
+		}
+		
+	}
+
 	protected abstract void init();
 	
 	/**
@@ -137,11 +152,11 @@ public abstract class BilliardGame extends JPanel {
 		this.screenHeight = screenHeight;
 	}
 
-	public BillardPhysicsManager getPhysicsManager() {
+	public PhysicsManager getPhysicsManager() {
 		return physicsManager;
 	}
 
-	public void setPhysicsManager(BillardPhysicsManager physicsManager) {
+	public void setPhysicsManager(PhysicsManager physicsManager) {
 		this.physicsManager = physicsManager;
 	}
 

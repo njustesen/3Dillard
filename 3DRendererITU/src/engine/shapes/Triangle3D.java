@@ -1,7 +1,6 @@
 package engine.shapes;
 import java.awt.Color;
 import java.awt.Rectangle;
-
 import engine.math.Point3D;
 import engine.math.Vector3D;
 
@@ -69,23 +68,14 @@ public class Triangle3D implements Comparable<Triangle3D>{
 	@Override
 	public int compareTo(Triangle3D t) {
 		
-		double thisZMin = Math.min(this.getPointC().getZ(), 
-				Math.min(this.getPointA().getZ(), this.getPointB().getZ()));
-		
-		//double thisZMax = Math.max(this.getPointC().getZ(), 
-		//		Math.max(this.getPointA().getZ(), this.getPointB().getZ()));
-		//double thisCenterZ = this.getCenter().getZ();
-		double otherZMin = Math.min(this.getPointC().getZ(), 
-				Math.min(t.getPointA().getZ(), t.getPointB().getZ()));
-		//double otherZMax = Math.max(this.getPointC().getZ(), 
-		//		Math.max(t.getPointA().getZ(), t.getPointB().getZ()));
-		//double otherCenterZ = t.getCenter().getZ();
+		double thisZMin = getDeepestZ();
+		double otherZMin = t.getDeepestZ();
 		
 		if(thisZMin > otherZMin){
-			return 1;
+			return -1;
 		}
 		else if(thisZMin < otherZMin){
-			return -1;
+			return 1;
 		}
 		return 0;
 	}
@@ -118,7 +108,7 @@ public class Triangle3D implements Comparable<Triangle3D>{
 		double xDif = maxX - minX;
 		double yDif = maxY - minY;
 		
-		return new Rectangle((int)minX, (int)minY, (int)xDif, (int)yDif);
+		return new Rectangle((int)minX, (int)minY, (int)xDif+1, (int)yDif+1);
 	}
 	
 	public Vector3D getSurfaceNormal(){
@@ -130,5 +120,9 @@ public class Triangle3D implements Comparable<Triangle3D>{
 		Vector3D p2 = v3.subtract(v1);
 		
 		return p1.getCrossProduct(p2);
+	}
+
+	public double getDeepestZ() {
+		return Math.min(a.getZ(), Math.min(b.getZ(), c.getZ()));
 	}
 }

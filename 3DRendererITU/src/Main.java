@@ -1,6 +1,5 @@
+import engine.BilliardGame;
 import game.EightBallGame;
-
-
 
 public class Main {
 
@@ -9,7 +8,8 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
-		EightBallGame game = new EightBallGame();
+		BilliardGame game = new EightBallGame();
+		//BilliardGame game = new Test();
 		game.run();
 
 	}
